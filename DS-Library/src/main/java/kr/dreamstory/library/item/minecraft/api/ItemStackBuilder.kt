@@ -1,4 +1,4 @@
-package kr.dreamstory.library.item.dreamstory.api
+package kr.dreamstory.library.item.minecraft.api
 
 import org.bukkit.Material
 import org.bukkit.inventory.ItemFlag

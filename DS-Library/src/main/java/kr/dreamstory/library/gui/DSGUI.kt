@@ -1,7 +1,9 @@
-package com.dreamstory.library.gui
+package kr.dreamstory.library.gui
 
-import com.dreamstory.library.coroutine.schedule
-import com.dreamstory.library.main
+import com.dreamstory.library.gui.DSGUIManager
+import com.dreamstory.library.gui.DSGUIOpenEvent
+import kr.dreamstory.library.coroutine.schedule
+import kr.dreamstory.library.main
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player

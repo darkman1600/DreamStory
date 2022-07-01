@@ -1,5 +1,7 @@
-package com.dreamstory.library.item.dsitem.objs
+package kr.dreamstory.library.item.dreamstory.item
 
+import kr.dreamstory.library.item.dreamstory.item.enums.DSItemTier
+import kr.dreamstory.library.item.dreamstory.item.enums.DSItemType
 import org.bukkit.inventory.ItemStack
 
 abstract class DSItemStack(

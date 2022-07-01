@@ -1,7 +1,7 @@
 package kr.dreamstory.library.item.minecraft
 
-import com.dreamstory.library.item.dsitem.objs.DSItemStack
-import kr.dreamstory.library.item.dreamstory.data.DSItemDataManager
+import kr.dreamstory.library.item.dreamstory.item.DSItemStack
+import kr.dreamstory.library.item.dreamstory.data.DSItemManager
 import kr.dreamstory.library.main
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 
 val ItemStack.key get() = getStringNbt("DSItemKey")
-fun ItemStack.getDSItem(): DSItemStack? { return DSItemDataManager.getDSItem(this.key ?: return null) }
+fun ItemStack.getDSItem(): DSItemStack? { return DSItemManager.getDSItem(this.key ?: return null) }
 
 fun ItemStack.getIntNbt(key: String) = itemMeta.persistentDataContainer[NamespacedKey(main,key), PersistentDataType.INTEGER]
 fun ItemStack.getStringNbt(key: String) = itemMeta.persistentDataContainer[NamespacedKey(main,key), PersistentDataType.STRING]

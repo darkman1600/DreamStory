@@ -1,5 +1,6 @@
 package com.dreamstory.library.gui
 
+import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList

@@ -1,4 +1,4 @@
-package com.dreamstory.library.item.dsitem.objs
+package kr.dreamstory.library.item.dreamstory.item.enums
 
 enum class DSItemTier(
     val display: String,

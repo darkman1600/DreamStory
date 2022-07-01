@@ -1,6 +1,6 @@
 package kr.dreamstory.library.gui.type
 
-import kr.dreamstory.library.item.dreamstory.api.ItemStackBuilder
+import kr.dreamstory.library.item.minecraft.api.ItemStackBuilder
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
