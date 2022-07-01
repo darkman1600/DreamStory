@@ -1,6 +1,6 @@
 package kr.dreamstory.shop.shop
 
-import com.dreamstory.library.gui.DSGUI
+import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
