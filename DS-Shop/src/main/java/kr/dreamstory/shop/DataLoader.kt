@@ -1,5 +1,6 @@
 package kr.dreamstory.shop
 
+import kr.dreamstory.library.message.MessageManager
 import kr.dreamstory.shop.category.Category
 import kr.dreamstory.shop.prize.Price
 import kr.dreamstory.shop.prize.PriceType
@@ -7,14 +8,25 @@ import kr.dreamstory.shop.prize.Prize
 import kr.dreamstory.shop.shop.ShopData
 import kr.dreamstory.shop.shop.ShopIcon
 import kr.dreamstory.shop.shop.ShopManager
+import org.apache.commons.io.FileUtils
 import org.bukkit.configuration.file.YamlConfiguration
+import org.yaml.snakeyaml.Yaml
 import java.io.File
 
 object DataLoader {
 
     fun load() {
         ShopManager.clearShop()
-        val files = File("${main.dataFolder.path}\\database").walk()
+        val directory = File("${main.dataFolder.path}\\database")
+        if(!directory.exists()) {
+            try {
+                directory.mkdirs()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return
+        }
+        val files = File("${main.dataFolder.path}\\database").listFiles() ?: return
         files.forEach { file ->
             if (!file.isFile) return@forEach
             val config = YamlConfiguration.loadConfiguration(file)
@@ -43,6 +55,7 @@ object DataLoader {
         }
         return categories
     }
+
     private fun getPrizes(config: YamlConfiguration, key: String): List<Prize> {
         val prizes = arrayListOf<Prize>()
         config.getStringList(key).forEach { item ->
