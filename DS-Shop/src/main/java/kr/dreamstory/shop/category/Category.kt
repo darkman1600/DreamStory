@@ -9,7 +9,7 @@ class Category(
     val item: ItemStack,
     val prizes: List<Prize>
 ) {
-
+    val prizeSlots = HashMap<Int,Prize>()
     val icon = item
 
 }
