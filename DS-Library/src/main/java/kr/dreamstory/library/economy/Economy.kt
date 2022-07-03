@@ -1,8 +1,6 @@
 package kr.dreamstory.library.economy
 
-import kr.dreamstory.library.data.PlayerDataManger
 import java.text.DecimalFormat
-import java.util.UUID
 
 class Economy(
     private var money: Long = 0,
@@ -38,4 +36,5 @@ class Economy(
         val decimalFormat = DecimalFormat("#,###")
         return decimalFormat.format(cash)
     }
+
 }
