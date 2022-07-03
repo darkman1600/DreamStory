@@ -1,6 +1,5 @@
-package com.dreamstory.library.gui
+package kr.dreamstory.library.gui
 
-import kr.dreamstory.library.gui.DSGUI
 import java.util.*
 
 object DSGUIManager {

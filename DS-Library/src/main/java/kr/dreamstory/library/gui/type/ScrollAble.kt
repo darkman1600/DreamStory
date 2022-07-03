@@ -1,6 +1,5 @@
-package com.dreamstory.library.gui.type
+package kr.dreamstory.library.gui.type
 
-import kr.dreamstory.library.gui.type.PageAble
 import org.bukkit.inventory.Inventory
 
 interface ScrollAble: PageAble {

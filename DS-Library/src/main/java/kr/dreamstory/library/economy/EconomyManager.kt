@@ -1,24 +1,18 @@
 package kr.dreamstory.library.economy
 
-import kr.dreamstory.library.economy.cash.Cash
-import kr.dreamstory.library.economy.money.Money
+import kr.dreamstory.library.data.PlayerDataManger
+import kr.dreamstory.library.main
 import java.util.UUID
 
 object EconomyManager {
 
-    private val moneyMap = HashMap<UUID, Money>()
-    private val cashMap = HashMap<UUID, Cash>()
+    private val economyMap = HashMap<UUID, Economy>()
 
-    fun getMoney(uuid: UUID) = moneyMap[uuid] ?: getNewMoney(uuid)
-    private fun getNewMoney(uuid: UUID): Money {
-        moneyMap[uuid] = Money()
-        return moneyMap[uuid]!!
-    }
+    fun getEconomy(uuid: UUID) = economyMap[uuid]!!
 
-    fun getCash(uuid: UUID) = cashMap[uuid] ?: getNewCash(uuid)
-    private fun getNewCash(uuid: UUID): Cash {
-        cashMap[uuid] = Cash()
-        return cashMap[uuid]!!
+    internal fun register(uuid: UUID) {
+        val data = PlayerDataManger.getPlayerData(uuid)
+        economyMap[uuid] = Economy(data.getLong(main,"economy.money"),data.getLong(main,"economy.cash"))
     }
 
 }
