@@ -6,7 +6,7 @@ class DSShop: JavaPlugin() {
 
     override fun onEnable() {
         main = this
-        getCommand("Shop")?.setExecutor(Command())
+        getCommand("상점")?.setExecutor(Command())
         server.pluginManager.registerEvents(Listener,main)
         DataLoader.load()
     }

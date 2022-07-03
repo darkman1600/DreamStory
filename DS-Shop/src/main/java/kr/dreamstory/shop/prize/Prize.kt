@@ -1,6 +1,17 @@
 package kr.dreamstory.shop.prize
 
-import kr.dreamstory.shop.shop.ShopIcon
+import kr.dreamstory.library.item.minecraft.addLore
+import org.bukkit.inventory.ItemStack
 
-class Prize(shopIcon: ShopIcon, price: Price) {
+class Prize(
+    val key: String,
+    val slot: Int,
+    var item: ItemStack,
+    val price: Price
+) {
+    val icon = item.addLore("§6가격 §7- §f${price.amount} §7원")
+
+    init {
+
+    }
 }
