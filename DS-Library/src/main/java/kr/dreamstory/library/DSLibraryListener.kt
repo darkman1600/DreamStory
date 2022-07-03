@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerQuitEvent
 
 class DSLibraryListener: Listener {
     @EventHandler
@@ -16,6 +17,12 @@ class DSLibraryListener: Listener {
         val uuid = event.player.uniqueId
         PlayerDataManger.getNewPlayerData(uuid)
         EconomyManager.register(uuid)
+    }
+
+    @EventHandler
+    fun onQuit(event: PlayerQuitEvent) {
+        val uuid = event.player.uniqueId
+        PlayerDataManger.getPlayerData(uuid).save()
     }
 
     @EventHandler
