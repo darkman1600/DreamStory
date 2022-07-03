@@ -2,8 +2,10 @@ package kr.dreamstory.library
 
 import kr.dreamstory.library.gui.DSGUIManager
 import kr.dreamstory.library.data.PlayerDataManger
+import kr.dreamstory.library.data.DataSaveEvent
 import kr.dreamstory.library.economy.EconomyManager
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -16,13 +18,20 @@ class DSLibraryListener: Listener {
     fun onJoin(event: PlayerJoinEvent) {
         val uuid = event.player.uniqueId
         PlayerDataManger.getNewPlayerData(uuid)
-        EconomyManager.register(uuid)
+        EconomyManager.inputData(uuid)
     }
 
     @EventHandler
     fun onQuit(event: PlayerQuitEvent) {
         val uuid = event.player.uniqueId
+        EconomyManager.saveAndQuit(uuid)
         PlayerDataManger.getPlayerData(uuid).save()
+        PlayerDataManger.unregister(uuid)
+    }
+
+    @EventHandler
+    fun onSave(event: DataSaveEvent) {
+        EconomyManager.saveAll()
     }
 
     @EventHandler

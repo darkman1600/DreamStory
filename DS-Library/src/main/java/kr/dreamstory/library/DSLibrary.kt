@@ -1,5 +1,6 @@
 package kr.dreamstory.library
 
+import kr.dreamstory.library.data.PlayerDataManger
 import kr.dreamstory.library.item.dreamstory.data.DSItemManager
 import kr.dreamstory.library.utils.SystemTimeManager
 import kr.dreamstory.library.item.dreamstory.item.DSItemCommand
@@ -13,5 +14,6 @@ class DSLibrary: JavaPlugin() {
         getCommand("dsitem")!!.setExecutor(DSItemCommand())
         server.pluginManager.registerEvents(DSLibraryListener(),this)
         SystemTimeManager.startTask()
+        PlayerDataManger.saveTask()
     }
 }
