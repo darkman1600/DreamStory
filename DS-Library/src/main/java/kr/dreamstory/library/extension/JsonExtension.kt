@@ -1,4 +1,4 @@
-package kr.dreamstory.library.utils.extension
+package kr.dreamstory.library.extension
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
