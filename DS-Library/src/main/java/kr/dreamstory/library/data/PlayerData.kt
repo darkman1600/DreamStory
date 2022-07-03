@@ -16,7 +16,7 @@ class PlayerData(uuid: UUID) {
     fun getString(plugin: JavaPlugin, key: String): String? { return config.getString("${plugin.name.lowercase()}.$key") }
     fun getStringList(plugin: JavaPlugin, key: String): List<String> { return config.getStringList("${plugin.name.lowercase()}.$key") }
 
-    fun set(plugin: JavaPlugin, key: String, value: Any?, save: Boolean) {
+    fun set(plugin: JavaPlugin, key: String, value: Any?, save: Boolean = false) {
         config.set("${plugin.name.lowercase()}.$key",value)
         if(save) save()
     }
