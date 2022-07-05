@@ -6,9 +6,9 @@ import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.Ability
 import kr.dreamstory.ability.ability.play.ability.AbilityType
 import kr.dreamstory.ability.ability.play.block.obj.BreakAbleBlock
-import com.dreamstory.ability.extension.ability
+import kr.dreamstory.ability.extension.ability
 import com.dreamstory.ability.extension.naturalDrop
-import com.dreamstory.ability.util.doubleFormat
+import kr.dreamstory.ability.util.doubleFormat
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import net.minecraft.server.level.EntityPlayer
@@ -30,7 +30,7 @@ import java.util.*
 class FarmObject(
     type: AbilityType,
     key: String,
-    regionId: Int,
+    regionName: String,
     prevLevel: Int,
     maxLevel: Double,
     exp: Long,
@@ -39,7 +39,7 @@ class FarmObject(
 ): AbilityObject(
     type,
     key,
-    regionId,
+    regionName,
     prevLevel,
     maxLevel,
     exp,

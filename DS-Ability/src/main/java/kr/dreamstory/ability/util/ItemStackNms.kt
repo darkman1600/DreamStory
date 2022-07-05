@@ -1,4 +1,4 @@
-package com.dreamstory.ability.util
+package kr.dreamstory.ability.util
 
 import com.google.gson.Gson
 import net.minecraft.nbt.NBTTagCompound

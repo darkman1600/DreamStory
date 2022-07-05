@@ -1,4 +1,4 @@
-package com.dreamstory.ability.objs
+package kr.dreamstory.ability.objs
 
 import org.bukkit.Material
 import org.bukkit.entity.Player

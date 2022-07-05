@@ -2,9 +2,9 @@ package kr.dreamstory.ability.ability.play.skills.fish
 
 import kr.dreamstory.ability.ability.play.skills.Active
 import kr.dreamstory.ability.ability.play.skills.Skill
-import com.dreamstory.ability.manager.CommandManager
-import com.dreamstory.ability.util.doubleFormat
-import com.dreamstory.ability.util.integerFormat
+import kr.dreamstory.ability.manager.CommandManager
+import kr.dreamstory.ability.util.doubleFormat
+import kr.dreamstory.ability.util.integerFormat
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player

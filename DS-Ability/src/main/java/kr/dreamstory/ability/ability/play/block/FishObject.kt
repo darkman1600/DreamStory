@@ -12,7 +12,7 @@ import kotlin.random.Random
 class FishObject(
     type: AbilityType,
     key: String,
-    regionId: Int,
+    regionName: String,
     prevLevel: Int,
     maxLevel: Double,
     exp: Long,
@@ -21,7 +21,7 @@ class FishObject(
 ): AbilityObject(
     type,
     key,
-    regionId,
+    regionName,
     prevLevel,
     maxLevel,
     exp,

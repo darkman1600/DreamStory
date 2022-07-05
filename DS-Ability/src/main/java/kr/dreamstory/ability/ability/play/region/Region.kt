@@ -2,21 +2,22 @@ package kr.dreamstory.ability.ability.play.region
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.data.WeatherType
-import com.dreamstory.ability.extension.locationToDSLocationString
-import com.dreamstory.ability.extension.parseDSLocation
-import com.dreamstory.ability.manager.MysqlManager
-import com.dreamstory.ability.manager.RegionManager
+import kr.dreamstory.ability.extension.locationToStringData
+import kr.dreamstory.ability.extension.parseLocation
+import kr.dreamstory.ability.manager.RegionManager
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import org.bukkit.Location
+import org.bukkit.configuration.file.YamlConfiguration
+import java.io.File
 import java.util.*
 
 class Region(
-    val key: Int,
+    val key: String,
     val protectName: String,
     var spawn: Location,
     var name: String,
-    var lastUpdate: Date,
+    var lastUpdate: Long,
     var des: String = "",
     var weatherType: WeatherType = WeatherType.SUN,
     var regionType: RegionType = RegionType.NONE,
@@ -36,9 +37,14 @@ class Region(
     fun update() {
         val date = Date()
         main.server.scheduler.schedule(main, SynchronizationContext.ASYNC) {
-            MysqlManager.executeQuery("UPDATE region SET spawn='${locationToDSLocationString(spawn)}', " +
-                    "name='$name', last_update=${date.time}, des='$des', " +
-                    "weather=${weatherType.index}, type=${regionType.index} WHERE id=$key")
+            val file = File("${main.dataFolder.path}\\database","regions.yml")
+            val config = YamlConfiguration.loadConfiguration(file)
+            config.set("$protectName.spawn", locationToStringData(spawn))
+            config.set("$protectName.name",name)
+            config.set("$protectName.last_update",date.time)
+            config.set("$protectName.des",des)
+            config.set("$protectName.weather",weatherType.index)
+            config.save(file)
         }
     }
 
@@ -47,22 +53,18 @@ class Region(
             repeating(100)
             while(true) {
                 if(!saved) break
-                val map = MysqlManager.executeQuery("region","id",key)
-                if(map.isEmpty()) {
-                    RegionManager.unregisterRegion(protectName)
-                    saved = false
-                    break
-                }
-                val date = (map["last_update"] as String).toLong()
-                if(date > lastUpdate.time) {
+                val file = File("${main.dataFolder.path}\\database","regions.yml")
+                val config = YamlConfiguration.loadConfiguration(file)
+                val date = config.getLong("$protectName.last_update")
+                if(date > lastUpdate) {
                     main.logger.info("§e지역의 데이터 변화가 감지되어 서버에 적용됩니다 .§7[ $name - $protectName ]")
                     // update
-                    lastUpdate = Date(date)
-                    name = map["name"] as String
-                    des = map["des"] as String
-                    spawn = (map["spawn"] as String).parseDSLocation()!!.location!!
-                    weatherType = WeatherType.indexOf(map["weather"] as Int)
-                    regionType = RegionType.indexOf(map["type"] as Int)
+                    lastUpdate = date
+                    name = config.getString("$protectName.name")!!
+                    des = config.getString("$protectName.des")!!
+                    spawn = config.getString("$protectName.spawn")!!.parseLocation()!!
+                    weatherType = WeatherType.indexOf(config.getInt("$protectName.weather"))
+                    regionType = RegionType.indexOf(config.getInt("$protectName.type"))
                 }
                 yield()
             }

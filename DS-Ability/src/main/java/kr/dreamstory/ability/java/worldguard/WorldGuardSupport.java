@@ -1,6 +1,6 @@
 package kr.dreamstory.ability.java.worldguard;
 
-import com.dreamstory.ability.core.sub.ChannelCore;
+import kr.dreamstory.ability.core.sub.ChannelCore;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;

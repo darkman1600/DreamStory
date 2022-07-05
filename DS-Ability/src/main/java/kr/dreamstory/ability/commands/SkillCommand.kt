@@ -1,7 +1,7 @@
 package kr.dreamstory.ability.commands
 
 import kr.dreamstory.ability.ability.play.skills.gui.SkillGUI
-import com.dreamstory.ability.extension.ability
+import kr.dreamstory.ability.extension.ability
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

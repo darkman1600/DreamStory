@@ -3,10 +3,10 @@ package com.dreamstory.ability.listener.ability
 import kr.dreamstory.ability.ability.play.block.obj.BreakAbleBlock
 import kr.dreamstory.ability.ability.play.command.InputType
 import kr.dreamstory.ability.ability.play.region.RegionType
-import com.dreamstory.ability.extension.region
+import kr.dreamstory.ability.extension.region
 import com.dreamstory.ability.listener.interfaces.ChannelListener
-import com.dreamstory.ability.manager.CommandManager
-import com.dreamstory.ability.manager.CommandManager.commandText
+import kr.dreamstory.ability.manager.CommandManager
+import kr.dreamstory.ability.manager.CommandManager.commandText
 import net.minecraft.world.EnumHand
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer

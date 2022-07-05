@@ -1,4 +1,4 @@
-package com.dreamstory.ability.util
+package kr.dreamstory.ability.util
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary

@@ -1,11 +1,12 @@
-package com.dreamstory.ability.core.sub
+package kr.dreamstory.ability.core.sub
 
+import com.dreamstory.ability.core.sub.Core
 import kr.dreamstory.ability.ability.play.block.obj.BreakAbleBlock
 import kr.dreamstory.ability.core.main.DSAbility
-import com.dreamstory.ability.java.worldguard.WorldGuardSupport
-import com.dreamstory.ability.java.worldguard.events.PlayerMoveListener
-import com.dreamstory.ability.manager.AbilityBlockManager
-import com.dreamstory.ability.manager.RegionManager
+import kr.dreamstory.ability.java.worldguard.WorldGuardSupport
+import kr.dreamstory.ability.java.worldguard.events.PlayerMoveListener
+import kr.dreamstory.ability.manager.AbilityBlockManager
+import kr.dreamstory.ability.manager.RegionManager
 import org.bukkit.entity.Player
 
 class ChannelCore(

@@ -2,7 +2,7 @@ package kr.dreamstory.ability.commands
 
 import kr.dreamstory.ability.ability.play.region.RegionGUI
 import com.dreamstory.ability.extension.cutLabel
-import com.dreamstory.ability.manager.RegionManager
+import kr.dreamstory.ability.manager.RegionManager
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -50,7 +50,7 @@ class RegionCommand: CommandExecutor, TabCompleter {
                         p.sendMessage("§c찾을 수 없는 지역명입니다.")
                         return false
                     }
-                    RegionGUI(p, reg, null)
+                    RegionGUI(reg, null).open(p)
                 }
             }
             "목록"-> {

@@ -1,4 +1,4 @@
-package com.dreamstory.ability.listener.ability
+package kr.dreamstory.ability.listener.ability
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.block.AbilityObject
@@ -7,13 +7,13 @@ import kr.dreamstory.ability.ability.play.block.HuntObject
 import kr.dreamstory.ability.ability.play.block.obj.BreakAbleBlock
 import kr.dreamstory.ability.ability.play.block.obj.Fish
 import kr.dreamstory.ability.ability.play.bossbar.BossBarManager
-import com.dreamstory.ability.extension.region
+import kr.dreamstory.ability.extension.region
 import com.dreamstory.ability.listener.interfaces.ChannelListener
-import com.dreamstory.ability.manager.AbilityBlockManager
-import com.dreamstory.ability.manager.CommandManager
-import com.dreamstory.library.coroutine.schedule
+import kr.dreamstory.ability.manager.AbilityBlockManager
+import kr.dreamstory.ability.manager.CommandManager
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.mobs.ActiveMob
+import kr.dreamstory.library.coroutine.schedule
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.LivingEntity
@@ -135,9 +135,8 @@ AbilityBlockListener: ChannelListener {
                 e.isCancelled = true
                 val biome = e.hook.location.block.biome
                 val region = p.region?: return
-                val id: Int = region.key
-                if (id <= 0) return
-                val ab: AbilityObject = AbilityBlockManager.getAbilityBlock(biome, id)?: return
+                val key = region.key
+                val ab: AbilityObject = AbilityBlockManager.getAbilityBlock(biome, key)?: return
                 (ab as FishObject).catchFish(p, p.inventory.itemInMainHand, e.hook)
             }
         } catch (ex: Exception) {

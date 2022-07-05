@@ -1,4 +1,4 @@
 name: DS-Ability
-main: kr.dreamstory.ability.DSAbility
+main: kr.dreamstory.ability.core.main.DSAbility
 version: 1.0.0
 api-version: 1.18

@@ -5,7 +5,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 
-class ChannelCommand: ChannelCommandExecutor, TabExecutor {
+class ChannelCommand: TabExecutor {
     override fun onTabComplete(sender: CommandSender, p1: Command, command: String, args: Array<out String>): List<String> {
         TODO("Not yet implemented")
     }

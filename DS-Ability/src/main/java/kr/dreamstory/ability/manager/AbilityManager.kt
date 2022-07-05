@@ -1,68 +1,46 @@
-package com.dreamstory.ability.manager
+package kr.dreamstory.ability.manager
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.Ability
-import kr.dreamstory.ability.api.DSCoreAPI
-import com.dreamstory.ability.extension.registerSQL
-import com.dreamstory.ability.extension.updateSQL
+import kr.dreamstory.library.coroutine.SynchronizationContext
+import kr.dreamstory.library.coroutine.schedule
+import kr.dreamstory.library.data.PlayerDataManger
 import java.util.*
 
 object AbilityManager {
 
-    val abilityMap = HashMap<Int, Ability>()
+    val abilityMap = HashMap<UUID, Ability>()
 
-    fun inputData(id: Int, ab: Ability) { abilityMap[id] = ab }
-    fun removeData(id: Int) { abilityMap.remove(id) }
-    fun getAbility(id: Int): Ability? = abilityMap[id]?: getNewAbility(id,true)
-    fun getTempAbility(id: Int): Ability? {
-        if(id <= 0) return null
-        return abilityMap[id]?: getNewAbility(id, false)
+    fun removeData(uuid: UUID) { abilityMap.remove(uuid) }
+    fun getAbility(uuid: UUID): Ability = abilityMap[uuid] ?: getNewAbility(uuid)
+    fun getNewAbility(uuid: UUID): Ability {
+        val d = PlayerDataManger.getPlayerData(uuid)
+        val ability = Ability(
+            uuid,
+            d.getInt(main,"ability.mine.level"),
+            d.getLong(main,"ability.mine.exp"),
+            d.getInt(main,"ability.farm.level"),
+            d.getLong(main,"ability.farm.exp"),
+            d.getInt(main,"ability.fish.level"),
+            d.getLong(main,"ability.fish.exp"),
+            d.getInt(main,"ability.hunt.level"),
+            d.getLong(main,"ability.hunt.exp"),
+            d.getString(main,"ability.mine.skill"),
+            d.getString(main,"ability.farm.skill"),
+            d.getString(main,"ability.fish.skill"),
+            d.getString(main,"ability.hunt.skill")
+        )
+        abilityMap[uuid] = ability
+        return abilityMap[uuid]!!
     }
-    fun getAbility(uuid: UUID): Ability? {
-        val id = DSCoreAPI.getPlayerId(uuid)
-        return if(id <= 0) null
-        else abilityMap[id]?: getNewAbility(id,true)
+
+    fun saveAndQuit(uuid: UUID) {
+        abilityMap.remove(uuid)?.updateData()
     }
 
-    fun saveAll() { abilityMap.values.forEach { it.updateSQL() } }
-
-    private fun getNewAbility(id: Int, save: Boolean): Ability? {
-        var ab: Ability? = null
-        try {
-            val sql = "SELECT * FROM ability WHERE player=?"
-            val s = MysqlManager.connection!!.prepareStatement(sql)
-            s.setInt(1, id)
-            val set = s.executeQuery()
-            if (set.next()) {
-                ab = Ability(
-                    id,
-                    set.getInt("farm_lv"),
-                    set.getLong("farm_exp"),
-                    set.getInt("mine_lv"),
-                    set.getLong("mine_exp"),
-                    set.getInt("hunt_lv"),
-                    set.getLong("hunt_exp"),
-                    set.getInt("fish_lv"),
-                    set.getLong("fish_exp"),
-                    set.getString("farm_skill"),
-                    set.getString("mine_skill"),
-                    set.getString("hunt_skill"),
-                    set.getString("fish_skill"),
-                    save
-                )
-            } else {
-                if (save) {
-                    ab = Ability(id)
-                    ab.registerSQL()
-                }
-            }
-            s.close()
-            set.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            main.logger.info("§cid : $id 의 유저 Ability 정보 로드에 실패 하였습니다.")
+    fun saveAll() {
+        main.server.scheduler.schedule(main,SynchronizationContext.ASYNC) {
+            abilityMap.values.forEach { it.updateData() }
         }
-        return ab
     }
-
 }

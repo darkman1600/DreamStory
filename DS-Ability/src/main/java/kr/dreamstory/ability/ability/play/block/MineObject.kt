@@ -7,14 +7,14 @@ import kr.dreamstory.ability.ability.play.ability.Ability
 import kr.dreamstory.ability.ability.play.ability.AbilityType
 import kr.dreamstory.ability.ability.play.block.obj.BreakAbleBlock
 import kr.dreamstory.ability.ability.play.damageskin.DamageSkinManager
-import com.dreamstory.ability.extension.ability
-import com.dreamstory.ability.extension.getDoubleNbt
-import com.dreamstory.ability.extension.getIntNbt
+import kr.dreamstory.ability.extension.ability
 import com.dreamstory.ability.extension.naturalDrop
-import com.dreamstory.ability.util.doubleFormat
+import kr.dreamstory.ability.util.doubleFormat
 import kr.dreamstory.library.coroutine.CoroutineTask
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
+import kr.dreamstory.library.item.minecraft.getDoubleNbt
+import kr.dreamstory.library.item.minecraft.getIntNbt
 import net.minecraft.server.level.EntityPlayer
 import org.bukkit.Color
 import org.bukkit.Material
@@ -33,7 +33,7 @@ import kotlin.math.roundToInt
 class MineObject(
     type: AbilityType,
     key: String,
-    regionId: Int,
+    regionName: String,
     prevLevel: Int,
     maxLevel: Double,
     exp: Long,
@@ -42,7 +42,7 @@ class MineObject(
 ): AbilityObject(
     type,
     key,
-    regionId,
+    regionName,
     prevLevel,
     maxLevel,
     exp,

@@ -2,9 +2,9 @@ package com.dreamstory.ability.extension
 
 import kr.dreamstory.ability.ability.play.item.DropGrade
 import kr.dreamstory.ability.ability.play.item.DropItemData
-import com.dreamstory.ability.manager.DropItemManager
-import com.dreamstory.ability.util.getNBTTagCompound
-import com.dreamstory.ability.util.percent
+import kr.dreamstory.ability.manager.DropItemManager
+import kr.dreamstory.ability.util.getNBTTagCompound
+import kr.dreamstory.ability.util.percent
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.*

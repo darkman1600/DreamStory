@@ -1,6 +1,6 @@
-package com.dreamstory.ability.listener
+package kr.dreamstory.ability.listener
 
-import com.dreamstory.ability.manager.ChannelManager
+import kr.dreamstory.ability.ability.main
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.FishHook
@@ -20,7 +20,7 @@ import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 
-class DreamStoryDefaultListener: Listener {
+class DSDefaultListener: Listener {
 
     private val cancelDamages by lazy {
         arrayOf(
@@ -48,7 +48,8 @@ class DreamStoryDefaultListener: Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun playerDropItem(e: PlayerDropItemEvent) {
-        if(ChannelManager.isMainServer && !e.player.isOp) e.isCancelled = true
+        val player = e.player
+        if(e.player.world == main.server.worlds.first() && !player.isOp) e.isCancelled = true
     }
     
     @EventHandler(priority = EventPriority.HIGHEST)

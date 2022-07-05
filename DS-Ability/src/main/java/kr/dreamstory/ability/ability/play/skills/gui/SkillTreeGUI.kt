@@ -5,9 +5,9 @@ import kr.dreamstory.ability.ability.play.ability.SkillTree
 import kr.dreamstory.ability.ability.play.command.InputType
 import kr.dreamstory.ability.ability.play.skills.Active
 import kr.dreamstory.ability.ability.play.skills.EnumSkill
-import com.dreamstory.ability.core.GUI
-import com.dreamstory.ability.manager.CommandManager
+import kr.dreamstory.ability.manager.CommandManager
 import com.dreamstory.ability.manager.SkillManager
+import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 
-class SkillTreeGUI(p: Player, title: String, skillTree: SkillTree, abilityType: AbilityType) : GUI(p, 36, title,skillTree,abilityType) {
+class SkillTreeGUI(title: String, skillTree: SkillTree, abilityType: AbilityType) : DSGUI(36, title,skillTree,abilityType) {
 
     private lateinit var skillTree: SkillTree
     private lateinit var abilityType: AbilityType
@@ -27,14 +27,11 @@ class SkillTreeGUI(p: Player, title: String, skillTree: SkillTree, abilityType: 
         buttons = HashMap()
     }
 
-    private var hidden = false
-
     override fun init() {
         if(buttons.isNotEmpty()) buttons.clear()
-        hidden = skillTree.hasLearnHiddenSkill
         for(i in 0 until 27) setVoidSlot(i)
         EnumSkill.getSkillList(abilityType).forEach {
-            val slot = it.getSlot(hidden)
+            val slot = it.slot
             inv.setItem(slot, SkillManager.getSkill(it)!!.getIcon(skillTree.getSkillLevel(it), skillTree.getCommand(it)), )
             buttons[slot] = it
         }
@@ -54,26 +51,31 @@ class SkillTreeGUI(p: Player, title: String, skillTree: SkillTree, abilityType: 
             if(buttons.containsKey(rawSlot)) {
                 val es = buttons[rawSlot]!!
                 val skill = SkillManager.getSkill(es) ?: return
+                val player = whoClicked as Player
+                fun click(suc: Boolean = true) {
+                    val sound = if(suc) Sound.BLOCK_LEVER_CLICK else Sound.BLOCK_NOTE_BLOCK_PLING
+                    player.playSound(player.location, sound, 1F, 0.8F)
+                }
                 if(isRightClick) {
                     // command
                     if(skill is Active) {
                         if(skillTree.getSkillLevel(es) == 0) {
                             click(false)
-                            player?.sendMessage("§c스킬 레벨이 0 입니다.")
+                            player.sendMessage("§c스킬 레벨이 0 입니다.")
                         }
                         else {
                             whoClicked.closeInventory()
-                            CommandManager.put(whoClicked as Player, skillTree, es, InputType.INSERT, 1)
+                            CommandManager.put(player, skillTree, es, InputType.INSERT, 1)
                         }
                     }
                 } else if(isLeftClick) {
                     // add level
                     if(skillTree.point == 0) {
                         click(false)
-                        player?.sendMessage("§c스킬 포인트가 부족합니다.")
+                        player.sendMessage("§c스킬 포인트가 부족합니다.")
                     } else {
                         if(skill.maxLevel == skillTree.getSkillLevel(es)) {
-                            player?.sendMessage("§c이미 최대 레벨입니다.")
+                            player.sendMessage("§c이미 최대 레벨입니다.")
                         } else {
                             click()
                             skillTree.addSkillLevel(es)
@@ -83,11 +85,6 @@ class SkillTreeGUI(p: Player, title: String, skillTree: SkillTree, abilityType: 
                 }
             }
         }
-    }
-
-    private fun click(suc: Boolean = true) {
-        val sound = if(suc) Sound.BLOCK_LEVER_CLICK else Sound.BLOCK_NOTE_BLOCK_PLING
-        player?.playSound(player?.location!!, sound, 1F, 0.8F)
     }
 
     override fun InventoryCloseEvent.closeEvent() {

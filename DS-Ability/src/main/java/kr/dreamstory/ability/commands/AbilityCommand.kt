@@ -2,11 +2,10 @@ package kr.dreamstory.ability.commands
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.AbilityType
-import com.dreamstory.ability.extension.updateSQL
-import com.dreamstory.ability.manager.AbilityManager
-import com.dreamstory.ability.manager.MysqlManager
+import kr.dreamstory.ability.manager.AbilityManager
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
+import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -30,14 +29,14 @@ class AbilityCommand:CommandExecutor, TabCompleter {
         main.server.scheduler.schedule(main, SynchronizationContext.ASYNC) {
             val target = main.server.getPlayer(args[0])
             var offline = false
-            val id: Int? = MysqlManager.executeQuery("player", "id", "name", args[0])
-            if (id == null) {
+            val uuid = Bukkit.getPlayerUniqueId(args[0])
+            if (uuid == null) {
                 p.sendMessage("§c해당 유저를 찾을 수 없습니다.")
                 return@schedule
             }
 
 
-            val ab = AbilityManager.getTempAbility(id)
+            val ab = AbilityManager.getAbility(uuid)
             if (ab == null) {
                 p.sendMessage("§c해당 유저의 특성 정보를 가져올 수 없습니다.")
                 return@schedule
@@ -64,7 +63,7 @@ class AbilityCommand:CommandExecutor, TabCompleter {
                         }
                         val suc = ab.setLevel(level, type)
                         if (suc) {
-                            if (offline) ab.updateSQL()
+                            if (offline) ab.updateData()
                             p.sendMessage("§7해당 유저의 레벨을 §e${args[3]} §7(으)로 변경했습니다.")
                         } else {
                             p.sendMessage("§c레벨 값이 올바르지 않습니다.")
@@ -94,7 +93,7 @@ class AbilityCommand:CommandExecutor, TabCompleter {
                                 yield()
                             }
                         }
-                        if (offline) ab.updateSQL()
+                        if (offline) ab.updateData()
                         p.sendMessage("§7해당 유저의 경험치를 §e${args[3]} §7만큼 추가했습니다.")
                     } catch (e: NumberFormatException) {
                         p.sendMessage("§c경험치 값은 숫자로 입력해야 합니다.")

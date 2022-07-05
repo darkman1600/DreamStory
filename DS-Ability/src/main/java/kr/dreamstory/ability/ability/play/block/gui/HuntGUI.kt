@@ -3,9 +3,9 @@ package kr.dreamstory.ability.ability.play.block.gui
 import kr.dreamstory.ability.ability.play.block.HuntObject
 import kr.dreamstory.ability.ability.play.block.obj.MobType
 import kr.dreamstory.ability.api.DSCoreAPI
-import com.dreamstory.ability.core.GUI
-import com.dreamstory.ability.manager.AbilityBlockManager
+import kr.dreamstory.ability.manager.AbilityBlockManager
 import com.google.common.collect.Lists
+import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import java.util.function.BiPredicate
 
-class HuntGUI(p: Player, huntBlock: HuntObject): GUI(p, 9, huntBlock.mobName,huntBlock) {
+class HuntGUI(huntBlock: HuntObject): DSGUI(9, huntBlock.mobName,huntBlock) {
 
     lateinit var huntBlock: HuntObject
 
@@ -44,12 +44,13 @@ class HuntGUI(p: Player, huntBlock: HuntObject): GUI(p, 9, huntBlock.mobName,hun
         val item = currentItem
         if(item == null || item.type == Material.AIR) return
         val slot = rawSlot
+        val player = whoClicked as Player
         if(slot >= 9) {
             if(huntBlock.setDropItem(item.clone())) {
-                player?.sendMessage("§f등록 되었습니다.")
+                player.sendMessage("§f등록 되었습니다.")
                 refresh()
             } else {
-                player?.sendMessage("§c드랍 아이템이 아닙니다.")
+                player.sendMessage("§c드랍 아이템이 아닙니다.")
             }
         } else {
             when(slot) {
@@ -58,119 +59,119 @@ class HuntGUI(p: Player, huntBlock: HuntObject): GUI(p, 9, huntBlock.mobName,hun
                     refresh()
                 }
                 2-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "삭제 : ! 입력", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             if(text == "!") {
                                 huntBlock.dungeonName = ""
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             if(text == "") { return@BiPredicate false }
 
                             huntBlock.dungeonName = text
-                            HuntGUI(player!!, huntBlock)
+                            HuntGUI(huntBlock).open(player)
                             return@BiPredicate true
-                        }).open(player!!)
+                        }).open(player)
                 }
                 3-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = Integer.parseInt(text)
                                 huntBlock.prevLevel = time
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 4-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toDouble()
                                 huntBlock.maxLevel = time
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 5-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toLong()
                                 huntBlock.exp = time
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 6-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = Integer.parseInt(text)
                                 if(time < 1) {
-                                    player!!.sendMessage("§c1보다 작을 수 없습니다.")
+                                    player.sendMessage("§c1보다 작을 수 없습니다.")
                                     return@BiPredicate false
                                 }
                                 huntBlock.bossN = time
-                                HuntGUI(player!!, huntBlock)
+                                HuntGUI(huntBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 8-> {
                     AbilityBlockManager.unregisterAbilityBlock(huntBlock)
-                    player!!.closeInventory()
+                    player.closeInventory()
                 }
             }
         }

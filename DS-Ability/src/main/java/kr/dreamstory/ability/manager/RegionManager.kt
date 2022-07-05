@@ -1,14 +1,17 @@
-package com.dreamstory.ability.manager
+package kr.dreamstory.ability.manager
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.data.WeatherType
 import kr.dreamstory.ability.ability.play.region.Region
 import kr.dreamstory.ability.ability.play.region.RegionType
-import com.dreamstory.ability.extension.locationToDSLocationString
-import com.dreamstory.ability.extension.parseDSLocation
-import com.dreamstory.library.coroutine.SynchronizationContext
-import com.dreamstory.library.coroutine.schedule
+import kr.dreamstory.ability.extension.locationToStringData
+import kr.dreamstory.ability.extension.parseLocation
+import kr.dreamstory.library.coroutine.SynchronizationContext
+import kr.dreamstory.library.coroutine.schedule
+import kr.dreamstory.library.systemTime
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
+import java.io.File
 import java.util.*
 
 object RegionManager {
@@ -19,43 +22,36 @@ object RegionManager {
             waitFor(100)
             repeating(1200)
             while(true) {
-                val s = MysqlManager.connection!!.prepareStatement("SELECT id FROM region WHERE 1")
-                val set = s.executeQuery()
-                while(set.next()) {
-                    val id = set.getInt("id")
-                    try {
-                        load(id)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        main.logger.info("region data error : id = $id")
-                    }
+                val file = File("${main.dataFolder.path}\\database","regions.yml")
+                val config = YamlConfiguration.loadConfiguration(file)
+                config.getKeys(false).forEach {
+                    load(it)
                 }
-                set.close()
-                s.close()
                 yield()
             }
         }
     }
 
-    private fun load(id: Int) {
-        val resultMap = MysqlManager.executeQuery("region","id", id)
-        if(resultMap.isEmpty()) return
-        val name = resultMap["name"] as String
-        val protectName = resultMap["wg_name"] as String
-        if(regionMap.containsKey(protectName)) return
-        else main.logger.info("§e새로운 지역이 추가되어 서버에 적용됩니다. §7[ $name - $protectName ]")
-        val des = resultMap["des"] as String
-        val spawn = (resultMap["spawn"] as String).parseDSLocation()!!.location!!
-        val weather = WeatherType.indexOf(resultMap["weather"] as Int)
-        val regionType = RegionType.indexOf(resultMap["type"] as Int)
-        val lastUpdate = resultMap["last_update"] as String
-        val date = Date(lastUpdate.toLong())
+    private fun load(key: String) {
+        val file = File("${main.dataFolder.path}\\database","regions.yml")
+        if(!file.exists()) return
+        val config = YamlConfiguration.loadConfiguration(file)
+        val protectName = config.getString("$key.wg_name")!!
+        val name = config.getString("$key.name")!!
+        if(regionMap.containsKey(key)) return
+        else main.logger.info("§e새로운 지역이 추가되어 서버에 적용됩니다. §7[ $name - $key ]")
+        val des = config.getString("$key.des")!!
+        val spawn = config.getString("$key.spawn")!!.parseLocation()!!
+        val weather = WeatherType.indexOf(config.getInt("$key.weather"))
+        val regionType = RegionType.indexOf(config.getInt("$key.type"))
+        val lastUpdate = config.getLong("$key.last_update")
 
-        regionMap[protectName] = Region(id, protectName, spawn, name, date, des, weather,regionType)
+        regionMap[key] = Region(key, protectName, spawn, name, lastUpdate, des, weather,regionType)
     }
 
     private val regionMap = HashMap<String, Region>()
     private val regionPlayers = HashMap<UUID, String>()
+
     val regionList: List<String>
         get() = regionMap.keys.toList()
     fun getPlayerInRegion(uuid: UUID): Region? {
@@ -77,30 +73,27 @@ object RegionManager {
         regionPlayers.filter { it.value == protectName }.keys.forEach { regionPlayers.remove(it) }
     }
 
-    @Deprecated(message = "쿼리에 저장됩니다.",level= DeprecationLevel.WARNING)
     fun unregisterRegion(region: Region) {
         region.saved = false
         unregisterRegion(region.protectName)
-        MysqlManager.executeQuery("DELETE FROM region WHERE id=${region.key}")
+        val file = File("${main.dataFolder.path}\\database","regions.yml")
+        val config = YamlConfiguration.loadConfiguration(file)
+        config.set(region.protectName,null)
+        config.save(file)
     }
 
-    fun registerRegion(protectName: String, name: String,p: Player): Boolean {
-        if(regionMap.filter { it.value.protectName == protectName }.isNotEmpty()) return false
-        val date = Date()
-        val time = date.time
+    fun registerRegion(protectName: String, name: String, p: Player): Boolean {
+        if(regionMap.containsKey(protectName)) return false
         val loc = p.location
         main.server.scheduler.schedule(main, SynchronizationContext.ASYNC) {
-            MysqlManager.executeQuery(
-                "INSERT INTO region (wg_name, name, spawn, last_update) values" +
-                        "('$protectName', '$name', '${locationToDSLocationString(loc)}', $time)")
-            waitFor(1)
-            val id: Int? = MysqlManager.executeQuery("region","id","wg_name",protectName)
-            regionMap[protectName] = Region(id!!, protectName, loc,name, date)
+            val file = File("${main.dataFolder.path}\\database","regions.yml")
+            val c = YamlConfiguration.loadConfiguration(file)
+            c.set("$protectName.wg_name",protectName)
+            c.set("$protectName.name",name)
+            c.set("$protectName.spawn", locationToStringData(loc))
+            c.set("$protectName.last_update", systemTime)
+            regionMap[protectName] = Region(protectName, protectName, loc, name, systemTime)
         }
         return true
     }
-
-    fun getRegionId(protectName: String): Int = MysqlManager.executeQuery("region", "id", "wg_name", protectName) ?: 0
-
-
 }

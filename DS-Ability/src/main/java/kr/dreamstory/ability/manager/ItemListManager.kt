@@ -1,4 +1,4 @@
-package com.dreamstory.ability.manager
+package kr.dreamstory.ability.manager
 
 import org.bukkit.Bukkit
 import org.bukkit.Material

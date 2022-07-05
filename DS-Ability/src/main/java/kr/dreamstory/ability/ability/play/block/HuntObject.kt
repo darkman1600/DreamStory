@@ -3,9 +3,8 @@ package kr.dreamstory.ability.ability.play.block
 import kr.dreamstory.ability.ability.play.ability.AbilityType
 import kr.dreamstory.ability.ability.play.block.obj.DamageInfo
 import kr.dreamstory.ability.ability.play.block.obj.MobType
-import com.dreamstory.ability.extension.ability
+import kr.dreamstory.ability.extension.ability
 import com.dreamstory.ability.extension.naturalDrop
-import com.dreamstory.ability.extension.wforestName
 import org.bukkit.Material
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -16,7 +15,7 @@ import java.math.RoundingMode
 class HuntObject(
     type: AbilityType,
     key: String,
-    regionId: Int,
+    regionName: String,
     prevLevel: Int,
     maxLevel: Double,
     exp: Long,
@@ -25,7 +24,7 @@ class HuntObject(
 ): AbilityObject(
     type,
     key,
-    regionId,
+    regionName,
     prevLevel,
     maxLevel,
     exp,
@@ -82,7 +81,7 @@ class HuntObject(
                 val percent = BigDecimal(damageInfo.getDamagePercent(le.maxHealth, it)).divide(BigDecimal(100), 3, RoundingMode.DOWN)
                 val addExp = BigDecimal(exp).multiply(percent)
                 ab.addExp(addExp.toLong(), AbilityType.HUNT)
-                server.broadcastMessage("${p.wforestName} : ${addExp.toLong()} [ damage : ${damageInfo.getDamage(it)}]")
+                server.broadcastMessage("${p.name} : ${addExp.toLong()} [ damage : ${damageInfo.getDamage(it)}]")
             }
             damageInfo.remove = true
         }

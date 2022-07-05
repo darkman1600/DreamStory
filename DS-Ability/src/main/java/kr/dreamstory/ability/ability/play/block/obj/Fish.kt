@@ -2,7 +2,7 @@ package kr.dreamstory.ability.ability.play.block.obj
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.AbilityType
-import com.dreamstory.ability.extension.ability
+import kr.dreamstory.ability.extension.ability
 import com.dreamstory.ability.extension.naturalDrop
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule

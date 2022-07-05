@@ -1,12 +1,12 @@
 package kr.dreamstory.ability.java.worldguard.events;
 
 import kr.dreamstory.ability.api.DSCoreAPI;
-import com.dreamstory.ability.core.sub.ChannelCore;
-import com.dreamstory.ability.java.worldguard.WorldGuardSupport;
+import kr.dreamstory.ability.core.sub.ChannelCore;
 import com.dreamstory.ability.listener.interfaces.ChannelListener;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import kr.dreamstory.ability.ability.VariableKt;
+import kr.dreamstory.ability.java.worldguard.WorldGuardSupport;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

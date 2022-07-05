@@ -2,9 +2,9 @@ package kr.dreamstory.ability.ability.play.block.gui
 
 import kr.dreamstory.ability.ability.play.block.FishObject
 import kr.dreamstory.ability.api.DSCoreAPI
-import com.dreamstory.ability.core.GUI
-import com.dreamstory.ability.manager.AbilityBlockManager
+import kr.dreamstory.ability.manager.AbilityBlockManager
 import com.google.common.collect.Lists
+import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -12,7 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import java.util.function.BiPredicate
 
-class FishGUI(p: Player, fishBlock: FishObject): GUI(p, 9, "낚시 바이옴 설정",fishBlock) {
+class FishGUI(fishBlock: FishObject): DSGUI(9, "낚시 바이옴 설정",fishBlock) {
 
     lateinit var fishBlock: FishObject
 
@@ -42,127 +42,128 @@ class FishGUI(p: Player, fishBlock: FishObject): GUI(p, 9, "낚시 바이옴 설
         val item = currentItem
         if(item == null || item.type == Material.AIR) return
         val slot = rawSlot
+        val player = whoClicked as Player
         if(slot >= 9) {
             if(fishBlock.setDropItem(item.clone())) {
-                player?.sendMessage("§f등록 되었습니다.")
+                player.sendMessage("§f등록 되었습니다.")
                 refresh()
             } else {
-                player?.sendMessage("§c드랍 아이템이 아닙니다.")
+                player.sendMessage("§c드랍 아이템이 아닙니다.")
             }
         } else {
             when(slot) {
                 1-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toDouble()
                                 fishBlock.health = time
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 true
                             } catch (ex: NumberFormatException) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 2-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toDouble()
                                 fishBlock.maxHealth = time
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 true
                             } catch (ex: NumberFormatException) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 3-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = Integer.parseInt(text)
                                 fishBlock.prevLevel = time
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 true
                             } catch (ex: NumberFormatException) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 4-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toDouble()
                                 fishBlock.maxLevel = time
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 true
                             } catch (ex: NumberFormatException) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 5-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toLong()
                                 fishBlock.exp = time
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 true
                             } catch (ex: NumberFormatException) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 6-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "1. 최소 2. 최대", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
-                                FishGUI(p, fishBlock)
+                                FishGUI(fishBlock).open(player)
                                 return@BiPredicate true
                             }
 
@@ -180,13 +181,13 @@ class FishGUI(p: Player, fishBlock: FishObject): GUI(p, 9, "낚시 바이옴 설
                                 check = true
                             } catch (ex: NumberFormatException) {}
 
-                            if(check) FishGUI(player!!, fishBlock)
+                            if(check) FishGUI(fishBlock).open(player)
                             check
-                        }).open(player!!)
+                        }).open(player)
                 }
                 8-> {
                     AbilityBlockManager.unregisterAbilityBlock(fishBlock)
-                    player!!.closeInventory()
+                    player.closeInventory()
                 }
             }
         }

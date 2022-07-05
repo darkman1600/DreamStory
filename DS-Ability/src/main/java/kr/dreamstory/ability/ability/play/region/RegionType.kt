@@ -1,6 +1,7 @@
 package kr.dreamstory.ability.ability.play.region
 
 enum class RegionType(val index: Int, val label: String) {
+
     NONE(0,"§7알 수 없음"),
     FIELD(1,"§a필드"),
     VILLAGE(2,"§6마을"),

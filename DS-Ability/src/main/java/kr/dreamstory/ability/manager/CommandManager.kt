@@ -1,4 +1,4 @@
-package com.dreamstory.ability.manager
+package kr.dreamstory.ability.manager
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.SkillTree
@@ -7,9 +7,9 @@ import kr.dreamstory.ability.ability.play.command.SkillCommand
 import kr.dreamstory.ability.ability.play.region.RegionType
 import kr.dreamstory.ability.ability.play.skills.Active
 import kr.dreamstory.ability.ability.play.skills.EnumSkill
-import com.dreamstory.ability.extension.ability
-import com.dreamstory.library.coroutine.SynchronizationContext
-import com.dreamstory.library.coroutine.schedule
+import kr.dreamstory.ability.extension.ability
+import kr.dreamstory.library.coroutine.SynchronizationContext
+import kr.dreamstory.library.coroutine.schedule
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -74,7 +74,7 @@ object CommandManager {
                     waitFor(1)
                     try {
                         val hand = p.inventory.itemInMainHand
-                        val tree = p.ability?.getSkillTree(hand.type) ?: return@schedule
+                        val tree = p.ability.getSkillTree(hand.type) ?: return@schedule
                         val skill = tree.getSkill(current)
                         if (skill == null || !isAbilityTool(hand.type)) p.sendTitle("no", null, 0, 40, 20)
                         else {

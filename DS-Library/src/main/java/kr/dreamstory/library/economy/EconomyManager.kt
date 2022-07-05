@@ -14,13 +14,16 @@ object EconomyManager {
 
     fun inputData(uuid: UUID) {
         val data = PlayerDataManger.getPlayerData(uuid)
-        economyMap[uuid] = Economy(data.getLong(main,"economy.money"),data.getLong(main,"economy.cash"))
+        economyMap[uuid] = Economy(
+            Money(data.getLong(main,"economy.money")),
+            Cash(data.getLong(main,"economy.cash"))
+        )
     }
     fun saveAndQuit(uuid: UUID) {
         val economy = getEconomy(uuid)
         val d = PlayerDataManger.getPlayerData(uuid)
-        d.set(main,"economy.money",economy.getMoney())
-        d.set(main,"economy.cash",economy.getCash())
+        d.set(main,"economy.money",economy.money)
+        d.set(main,"economy.cash",economy.cash)
         economyMap.remove(uuid)
     }
 
@@ -28,8 +31,8 @@ object EconomyManager {
         main.server.scheduler.schedule(main,SynchronizationContext.ASYNC) {
             economyMap.forEach { (uuid, e) ->
                 val d = PlayerDataManger.getPlayerData(uuid)
-                d.set(main,"economy.money",e.getMoney())
-                d.set(main,"economy.cash",e.getCash())
+                d.set(main,"economy.money",e.money.amount)
+                d.set(main,"economy.cash",e.cash.amount)
                 d.save()
             }
         }

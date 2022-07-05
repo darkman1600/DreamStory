@@ -2,7 +2,7 @@ package com.dreamstory.ability.listener
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent
 import kr.dreamstory.ability.ability.play.superjump.SuperJumpManager
-import com.dreamstory.ability.manager.CommandManager
+import kr.dreamstory.ability.manager.CommandManager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerToggleSneakEvent

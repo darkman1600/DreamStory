@@ -2,8 +2,8 @@ package kr.dreamstory.ability.ability.play.skills.mine
 
 import kr.dreamstory.ability.ability.play.skills.Active
 import kr.dreamstory.ability.ability.play.skills.Skill
-import com.dreamstory.ability.manager.CommandManager
-import com.dreamstory.ability.util.doubleFormatScale2
+import kr.dreamstory.ability.manager.CommandManager
+import kr.dreamstory.ability.util.doubleFormatScale2
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player

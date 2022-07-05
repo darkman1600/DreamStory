@@ -2,9 +2,9 @@ package kr.dreamstory.ability.ability.play.block.gui
 
 import kr.dreamstory.ability.ability.play.block.MineObject
 import kr.dreamstory.ability.api.DSCoreAPI
-import com.dreamstory.ability.core.GUI
-import com.dreamstory.ability.manager.AbilityBlockManager
+import kr.dreamstory.ability.manager.AbilityBlockManager
 import com.google.common.collect.Lists
+import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import java.util.function.BiPredicate
 
-class MineGUI(p: Player, mineBlock: MineObject): GUI(p, 9, "채굴 블럭 설정",mineBlock) {
+class MineGUI(mineBlock: MineObject): DSGUI(9, "채굴 블럭 설정",mineBlock) {
 
     lateinit var mineBlock: MineObject
 
@@ -42,106 +42,107 @@ class MineGUI(p: Player, mineBlock: MineObject): GUI(p, 9, "채굴 블럭 설정
         val item = currentItem
         if(item == null || item.type == Material.AIR) return
         val slot = rawSlot
+        val player = whoClicked as Player
         if(slot >= 9) {
             if(mineBlock.setDropItem(item.clone())) {
-                player?.sendMessage("§f등록 되었습니다.")
+                player.sendMessage("§f등록 되었습니다.")
                 refresh()
             } else {
-                player?.sendMessage("§c드랍 아이템이 아닙니다.")
+                player.sendMessage("§c드랍 아이템이 아닙니다.")
             }
         } else {
             when(slot) {
                 1-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val hp = lines[0]
                             if(hp == "-") {
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val health = hp.toDouble()
                                 mineBlock.maxHealth = health
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 3-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = Integer.parseInt(text)
                                 mineBlock.prevLevel = time
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 4-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toDouble()
                                 mineBlock.maxLevel = time
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 5-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             }
 
                             try {
                                 val time = text.toLong()
                                 mineBlock.exp = time
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             } catch (e: Exception) {
                                 p.sendMessage("§c숫자만 입력 가능합니다.")
                                 return@BiPredicate false
                             }
-                        }).open(player!!)
+                        }).open(player)
                 }
                 6-> {
-                    player!!.closeInventory()
+                    player.closeInventory()
                     DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "", ""))
                         .response(BiPredicate { p, lines ->
                             var text = lines[0]
                             if(text == "-") {
-                                MineGUI(player!!, mineBlock)
+                                MineGUI(mineBlock).open(player)
                                 return@BiPredicate true
                             }
 
@@ -164,13 +165,13 @@ class MineGUI(p: Player, mineBlock: MineObject): GUI(p, 9, "채굴 블럭 설정
                                 mineBlock.pitch = pitch
                                 check = true
                             } catch (e: Exception) {}
-                            if(check) MineGUI(player!!, mineBlock)
+                            if(check) MineGUI(mineBlock).open(player)
                             return@BiPredicate check
-                        }).open(player!!)
+                        }).open(player)
                 }
                 8-> {
                     AbilityBlockManager.unregisterAbilityBlock(mineBlock)
-                    player!!.closeInventory()
+                    player.closeInventory()
                 }
             }
         }

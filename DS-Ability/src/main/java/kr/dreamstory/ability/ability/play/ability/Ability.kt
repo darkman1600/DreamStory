@@ -1,14 +1,15 @@
 package kr.dreamstory.ability.ability.play.ability
 
+import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.hud.HUDSkin
-import kr.dreamstory.ability.ability.play.data.PlayerOption
-import com.dreamstory.ability.extension.fromJson
-import com.dreamstory.ability.extension.updateSQL
-import com.dreamstory.ability.manager.AbilityManager
+import kr.dreamstory.library.data.PlayerDataManger
+import kr.dreamstory.library.extension.fromJson
+import kr.dreamstory.library.extension.toJson
 import org.bukkit.Material
+import java.util.UUID
 import kotlin.math.roundToInt
 
-data class Ability(val id: Int, val save: Boolean) {
+data class Ability(val uuid: UUID) {
 
     private var levels: Array<Int> = Array(4) { 0 }
     private var exps: Array<Long> = Array(4) { 0 }
@@ -21,42 +22,34 @@ data class Ability(val id: Int, val save: Boolean) {
         private set
     private var actionBarUpdate: Boolean = false
 
-    constructor(id: Int): this(id, true) {
-        skills = Array(4) { SkillTree() }
-        AbilityManager.inputData(id, this)
-        actionBar = parseActionBar()
-    }
-
     constructor(
-            id: Int,
-            farmLv: Int, farmExp: Long,
+            uuid: UUID,
             mineLv: Int, mineExp: Long,
-            huntLv: Int, huntExp: Long,
+            farmLv: Int, farmExp: Long,
             fishLv: Int, fishExp: Long,
-            farmSkill: String?, mineSkill: String?,
-            huntSkill: String?, fishSkill: String?,
-            save: Boolean
-    ): this(id,save) {
-        levels[AbilityType.FARM.index] = farmLv
-        exps[AbilityType.FARM.index] = farmExp
-
+            huntLv: Int, huntExp: Long,
+            mineSkill: String?, farmSkill: String?,
+            fishSkill: String?, huntSkill: String?,
+    ): this(uuid) {
         levels[AbilityType.MINE.index] = mineLv
         exps[AbilityType.MINE.index] = mineExp
 
-        levels[AbilityType.HUNT.index] = huntLv
-        exps[AbilityType.HUNT.index] = huntExp
+        levels[AbilityType.FARM.index] = farmLv
+        exps[AbilityType.FARM.index] = farmExp
 
         levels[AbilityType.FISH.index] = fishLv
         exps[AbilityType.FISH.index] = fishExp
 
-        skills = arrayOf(farmSkill?.fromJson()?: SkillTree(),mineSkill?.fromJson()?: SkillTree(),
-                huntSkill?.fromJson()?: SkillTree(),fishSkill?.fromJson()?: SkillTree()
-        )
+        levels[AbilityType.HUNT.index] = huntLv
+        exps[AbilityType.HUNT.index] = huntExp
 
-        if(save) {
-            AbilityManager.inputData(id, this)
-            actionBar = parseActionBar()
-        }
+        skills = arrayOf(
+            mineSkill?.fromJson()?: SkillTree(),
+            farmSkill?.fromJson()?: SkillTree(),
+            fishSkill?.fromJson()?: SkillTree(),
+            huntSkill?.fromJson()?: SkillTree()
+        )
+        actionBar = parseActionBar()
     }
 
     fun getLevel(type: AbilityType): Int = levels[type.index]
@@ -66,10 +59,10 @@ data class Ability(val id: Int, val save: Boolean) {
     fun getSkillTree(index: Int): SkillTree = skills[index]
     fun getSkillTree(material: Material): SkillTree? {
         return when(material) {
-            Material.NETHERITE_HOE -> skills[AbilityType.FARM.index]
             Material.NETHERITE_PICKAXE -> skills[AbilityType.MINE.index]
-            Material.NETHERITE_SWORD -> skills[AbilityType.HUNT.index]
+            Material.NETHERITE_HOE -> skills[AbilityType.FARM.index]
             Material.FISHING_ROD -> skills[AbilityType.FISH.index]
+            Material.NETHERITE_SWORD -> skills[AbilityType.HUNT.index]
             else -> null
         }
     }
@@ -121,8 +114,8 @@ data class Ability(val id: Int, val save: Boolean) {
         if(level > MaxExps.maxLevel || level < 0) return false
         levels[type.index] = level
         exps[type.index] = 0
-        if(save) actionBar = parseActionBar()
-        else updateSQL()
+        actionBar = parseActionBar()
+        updateData()
         return true
     }
 
@@ -132,34 +125,44 @@ data class Ability(val id: Int, val save: Boolean) {
             exps[i] = 0
         }
         skills.forEach { it.reset(true) }
-        updateSQL()
-        if(save) actionBar = parseActionBar()
+        updateData()
+        actionBar = parseActionBar()
     }
 
     fun skillReset(type: AbilityType) {
         val tree = skills[type.index]
         val point = tree.reset(false)
         tree.point = point
-        updateSQL()
+        updateData()
     }
 
-    fun quit() {
-        updateSQL()
-        AbilityManager.removeData(id)
+    fun updateData() {
+        val d = PlayerDataManger.getPlayerData(uuid)
+        d.set(main,"ability.mine.level", getLevel(AbilityType.MINE))
+        d.set(main,"ability.mine.exp", getExp(AbilityType.MINE))
+        d.set(main,"ability.farm.level", getLevel(AbilityType.FARM))
+        d.set(main,"ability.farm.exp", getExp(AbilityType.FARM))
+        d.set(main,"ability.fish.level", getLevel(AbilityType.FISH))
+        d.set(main,"ability.fish.exp", getExp(AbilityType.FISH))
+        d.set(main,"ability.hunt.level", getLevel(AbilityType.HUNT))
+        d.set(main,"ability.hunt.exp", getExp(AbilityType.HUNT))
+        d.set(main,"ability.mine.skill", getSkillTree(AbilityType.MINE).toJson())
+        d.set(main,"ability.hunt.skill", getSkillTree(AbilityType.FARM).toJson())
+        d.set(main,"ability.fish.skill", getSkillTree(AbilityType.FISH).toJson())
+        d.set(main,"ability.hunt.skill", getSkillTree(AbilityType.HUNT).toJson())
+        d.save()
     }
 
-    fun updateActionBar(skin: Int) { actionBar = parseActionBar(skin) }
-
-    private fun parseActionBar(index: Int? = null): String {
-        val skin = index?: (PlayerOption.getPlayerOptionById(id)?.skinNumber?: 0)
-        expBar = (base + getState(getExp(AbilityType.FARM), getMaxExp(AbilityType.FARM), skin) + getUnicode(skin, FARM_BASE) +"\uF80A"
-                + getState(getExp(AbilityType.HUNT), getMaxExp(AbilityType.HUNT), skin) + getUnicode(skin, HUNT_BASE) +"\uF80A"
+    private fun parseActionBar(): String {
+        val skin = 0
+        expBar = (base + getState(getExp(AbilityType.MINE), getMaxExp(AbilityType.MINE), skin) + getUnicode(skin, MINE_BASE) +"\uF80A"
+                + getState(getExp(AbilityType.FARM), getMaxExp(AbilityType.FARM), skin) + getUnicode(skin, FARM_BASE) +"\uF80A"
                 + getState(getExp(AbilityType.FISH), getMaxExp(AbilityType.FISH), skin)  + getUnicode(skin, FISH_BASE) +"\uF80A"
-                + getState(getExp(AbilityType.MINE), getMaxExp(AbilityType.MINE), skin) + getUnicode(skin, MINE_BASE))
-        levelBar = (getLevelState(AbilityType.FARM, getLevel(AbilityType.FARM))
-                + getLevelState(AbilityType.HUNT, getLevel(AbilityType.HUNT))
+                + getState(getExp(AbilityType.HUNT), getMaxExp(AbilityType.HUNT), skin) + getUnicode(skin, HUNT_BASE))
+        levelBar = (getLevelState(AbilityType.MINE, getLevel(AbilityType.MINE))
+                + getLevelState(AbilityType.FARM, getLevel(AbilityType.FARM))
                 + getLevelState(AbilityType.FISH, getLevel(AbilityType.FISH))
-                + getLevelState(AbilityType.MINE, getLevel(AbilityType.MINE)))
+                + getLevelState(AbilityType.HUNT, getLevel(AbilityType.HUNT)))
         actionBarUpdate = true
         return expBar + levelBar
     }
@@ -169,11 +172,11 @@ data class Ability(val id: Int, val save: Boolean) {
             actionBar = parseActionBar()
             return
         }
-        val skin = PlayerOption.getPlayerOptionById(id)?.skinNumber?: 0
-        expBar = (base + getState(getExp(AbilityType.FARM), getMaxExp(AbilityType.FARM), skin) + getUnicode(skin, FARM_BASE) +"\uF80A"
-                + getState(getExp(AbilityType.HUNT), getMaxExp(AbilityType.HUNT), skin) + getUnicode(skin, HUNT_BASE) +"\uF80A"
+        val skin = 0
+        expBar = (base + getState(getExp(AbilityType.MINE), getMaxExp(AbilityType.MINE), skin) + getUnicode(skin, MINE_BASE) +"\uF80A"
+                + getState(getExp(AbilityType.FARM), getMaxExp(AbilityType.FARM), skin) + getUnicode(skin, FARM_BASE) +"\uF80A"
                 + getState(getExp(AbilityType.FISH), getMaxExp(AbilityType.FISH), skin)  + getUnicode(skin, FISH_BASE) +"\uF80A"
-                + getState(getExp(AbilityType.MINE), getMaxExp(AbilityType.MINE), skin) + getUnicode(skin, MINE_BASE))
+                + getState(getExp(AbilityType.HUNT), getMaxExp(AbilityType.HUNT), skin) + getUnicode(skin, HUNT_BASE))
         actionBar = expBar + levelBar
     }
 
@@ -182,22 +185,21 @@ data class Ability(val id: Int, val save: Boolean) {
             actionBar = parseActionBar()
             return
         }
-        levelBar = (getLevelState(AbilityType.FARM, getLevel(AbilityType.FARM))
-                + getLevelState(AbilityType.HUNT, getLevel(AbilityType.HUNT))
+        levelBar = (getLevelState(AbilityType.MINE, getLevel(AbilityType.MINE))
+                + getLevelState(AbilityType.FARM, getLevel(AbilityType.FARM))
                 + getLevelState(AbilityType.FISH, getLevel(AbilityType.FISH))
-                + getLevelState(AbilityType.MINE, getLevel(AbilityType.MINE)))
+                + getLevelState(AbilityType.HUNT, getLevel(AbilityType.HUNT)))
         actionBar = expBar + levelBar
     }
 
     companion object {
         val skins = arrayOf(
             HUDSkin("§f기본",arrayOf("\u00a1","\u00a2","\u00a4","\u00a3","\u00a5","\u00a6")),
-            HUDSkin("§a테스트",arrayOf("\u00b1","\u00b2","\u00b4","\u00b3","\u00b5","\u00b6"))
         )
-        const val FARM_BASE = 0
-        const val HUNT_BASE = 1
+        const val MINE_BASE = 0
+        const val FARM_BASE = 1
         const val FISH_BASE = 2
-        const val MINE_BASE = 3
+        const val HUNT_BASE = 3
         const val EXP_VOID = 4
         const val EXP_COLOR = 5
         private const val frontExp = "\uF82a\uF829\uF828\uF823"
@@ -236,10 +238,10 @@ data class Ability(val id: Int, val save: Boolean) {
 
         private fun getLevelState(type: AbilityType, level: Int): String {
             return when (type) {
-                AbilityType.FARM -> "\uF80c\uF80c\uF801${getLevelCenter(level)}"
-                AbilityType.HUNT -> "\uF82b\uF802${getLevelCenter(level)}"
+                AbilityType.MINE -> "\uF80c\uF80c\uF801${getLevelCenter(level)}"
+                AbilityType.FARM -> "\uF82b\uF802${getLevelCenter(level)}"
                 AbilityType.FISH -> "\uF82a\uF829\uF826\uF828${getLevelCenter(level)}"
-                AbilityType.MINE -> "\uF82b\uF802${getLevelCenter(level)}"
+                AbilityType.HUNT -> "\uF82b\uF802${getLevelCenter(level)}"
                 else -> ""
             }
         }

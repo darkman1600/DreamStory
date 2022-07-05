@@ -1,15 +1,15 @@
 package kr.dreamstory.ability.commands.channel
 
 import com.dreamstory.ability.extension.toDropGrade
-import com.dreamstory.ability.interfaces.ChannelCommandExecutor
-import com.dreamstory.ability.manager.DropItemManager
-import com.dreamstory.ability.util.integerFormat
+import kr.dreamstory.ability.manager.DropItemManager
+import kr.dreamstory.ability.util.integerFormat
 import org.bukkit.Material
 import org.bukkit.command.Command
+import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class DropItemCommand: ChannelCommandExecutor {
+class DropItemCommand: CommandExecutor {
 
     override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
         if(sender !is Player) return false

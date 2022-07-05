@@ -6,11 +6,11 @@ import kr.dreamstory.ability.ability.play.block.AbilityObject
 import kr.dreamstory.ability.ability.play.block.MineObject
 import kr.dreamstory.ability.ability.play.skills.Active
 import kr.dreamstory.ability.ability.play.skills.Skill
-import com.dreamstory.ability.extension.ability
-import com.dreamstory.ability.manager.AbilityBlockManager
-import com.dreamstory.ability.manager.CommandManager
-import com.dreamstory.ability.util.doubleFormat
-import com.dreamstory.ability.util.integerFormat
+import kr.dreamstory.ability.extension.ability
+import kr.dreamstory.ability.manager.AbilityBlockManager
+import kr.dreamstory.ability.manager.CommandManager
+import kr.dreamstory.ability.util.doubleFormat
+import kr.dreamstory.ability.util.integerFormat
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import org.bukkit.Location

@@ -1,9 +1,9 @@
-package com.dreamstory.ability.manager
+package kr.dreamstory.ability.manager
 
 import kr.dreamstory.ability.ability.play.item.DropGrade
 import kr.dreamstory.ability.ability.play.item.DropItemData
-import com.dreamstory.ability.util.addNBTTagCompound
-import com.dreamstory.ability.util.getNBTTagCompound
+import kr.dreamstory.ability.util.addNBTTagCompound
+import kr.dreamstory.ability.util.getNBTTagCompound
 import org.bukkit.inventory.ItemStack
 import kotlin.math.roundToInt
 

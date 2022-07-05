@@ -1,7 +1,5 @@
 package kr.dreamstory.ability.commands
 
-import com.dreamstory.ability.extension.changeChannel
-import com.dreamstory.ability.manager.ChannelManager
 import org.bukkit.Location
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -27,15 +25,12 @@ class SpawnCommand: TabExecutor {
             }
             return true
         }
-        if(!ChannelManager.isMainServer) {
-            sender.changeChannel("server1")
-        } else {
-            if(spawn == null) {
-                sender.sendMessage("스폰 포인트 미설정. 관리자에게 문의하세요.")
-                return false
-            }
-            sender.teleport(spawn!!)
+        if(spawn == null) {
+            sender.sendMessage("스폰 포인트 미설정. 관리자에게 문의하세요.")
+            return false
         }
+        sender.teleport(spawn!!)
+
         return true
     }
 }

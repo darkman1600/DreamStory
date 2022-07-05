@@ -1,8 +1,8 @@
 package kr.dreamstory.ability.ability.play.region
 
 import kr.dreamstory.ability.api.DSCoreAPI
-import com.dreamstory.ability.core.GUI
 import com.google.common.collect.Lists
+import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import java.util.function.BiPredicate
 
-class RegionGUI(p: Player, region: Region, clone: Region?): GUI(p, 9, "지역 관리", region, clone) {
+class RegionGUI(region: Region, clone: Region?): DSGUI(9, "지역 관리", region, clone) {
 
     private lateinit var region: Region
     private lateinit var region_: Region
@@ -34,6 +34,7 @@ class RegionGUI(p: Player, region: Region, clone: Region?): GUI(p, 9, "지역 �
         if(rawSlot > 8) {
             return
         }
+        val player = whoClicked as Player
         when(rawSlot) {
             0-> {
                 tempClose = true
@@ -41,15 +42,15 @@ class RegionGUI(p: Player, region: Region, clone: Region?): GUI(p, 9, "지역 �
                     .response(BiPredicate { p, lines ->
                         var text = lines[0]
                         if(text == "-") {
-                            RegionGUI(p, region,region_)
+                            RegionGUI(region,region_).open(player)
                             return@BiPredicate true
                         }
                         text = text.replace("&","§")
                         if(text.isBlank()) return@BiPredicate false
                         region_.name = text
-                        RegionGUI(p, region,region_)
+                        RegionGUI(region,region_).open(player)
                         return@BiPredicate true
-                    }).open(player!!)
+                    }).open(player)
             }
             1-> {
                 tempClose = true
@@ -57,19 +58,19 @@ class RegionGUI(p: Player, region: Region, clone: Region?): GUI(p, 9, "지역 �
                     .response(BiPredicate { p, lines ->
                         var text = lines[0]
                         if(text == "-") {
-                            RegionGUI(p, region,region_)
+                            RegionGUI(region,region_).open(player)
                             return@BiPredicate true
                         }
                         text += lines[1] + lines[2]
                         text = text.replace("&","§")
                         if(text.isBlank()) return@BiPredicate false
                         region_.des = text
-                        RegionGUI(p, region,region_)
+                        RegionGUI(region,region_).open(player)
                         return@BiPredicate true
-                    }).open(player!!)
+                    }).open(player)
             }
             2-> {
-                region_.spawn = player!!.location
+                region_.spawn = player.location
                 refresh()
             }
             3-> {

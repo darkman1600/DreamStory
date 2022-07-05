@@ -1,16 +1,15 @@
-package com.dreamstory.ability.listener.ability
+package kr.dreamstory.ability.listener.ability
 
 import kr.dreamstory.ability.ability.play.ability.AbilityType
-import com.dreamstory.ability.ability.play.block.*
 import kr.dreamstory.ability.ability.play.block.gui.FarmGUI
 import kr.dreamstory.ability.ability.play.block.gui.FishGUI
 import kr.dreamstory.ability.ability.play.block.gui.HuntGUI
 import kr.dreamstory.ability.ability.play.block.gui.MineGUI
 import kr.dreamstory.ability.ability.play.region.RegionType
-import com.dreamstory.ability.extension.region
+import kr.dreamstory.ability.extension.region
 import com.dreamstory.ability.listener.interfaces.ChannelListener
-import com.dreamstory.ability.manager.AbilityBlockManager
-import com.dreamstory.ability.objs.AbilityBlockStick
+import kr.dreamstory.ability.manager.AbilityBlockManager
+import kr.dreamstory.ability.objs.AbilityBlockStick
 import io.lumine.mythic.bukkit.MythicBukkit
 import kr.dreamstory.ability.ability.play.block.*
 import org.bukkit.GameMode
@@ -65,21 +64,21 @@ class AbilityBlockRegisterListener: ChannelListener {
                 if(abilityObject == null) {
                     if(AbilityBlockManager.registerAbilityBlock(block.biome, AbilityType.FISH, region.key)) p.sendMessage("§a등록 됨")
                     else p.sendMessage("§c등록 실패")
-                } else FishGUI(p, abilityObject as FishObject)
+                } else FishGUI(abilityObject as FishObject).open(p)
             }
             AbilityType.FARM -> {
                 abilityObject = AbilityBlockManager.getAbilityBlock(block.blockData)
                 if(abilityObject == null) {
                     if(AbilityBlockManager.registerAbilityBlock(block.blockData.toString(), AbilityType.FARM, region.key)) p.sendMessage("§a등록 됨")
                     else p.sendMessage("§c등록 실패")
-                } else FarmGUI(p, abilityObject as FarmObject)
+                } else FarmGUI(abilityObject as FarmObject).open(p)
             }
             AbilityType.MINE -> {
                 abilityObject = AbilityBlockManager.getAbilityBlock(block.blockData)
                 if(abilityObject == null) {
                     if(AbilityBlockManager.registerAbilityBlock(block.blockData.toString(), AbilityType.MINE, region.key)) p.sendMessage("§a등록 됨")
                     else p.sendMessage("§c등록 실패")
-                } else MineGUI(p, abilityObject as MineObject)
+                } else MineGUI(abilityObject as MineObject).open(p)
             }
         }
     }
@@ -97,9 +96,9 @@ class AbilityBlockRegisterListener: ChannelListener {
         p.gameMode = GameMode.CREATIVE
         val ab = AbilityBlockManager.getAbilityBlock(mob.mobType)
         if (ab != null) {
-            HuntGUI(p, ab as HuntObject)
+            HuntGUI(ab as HuntObject).open(p)
         } else {
-            if (AbilityBlockManager.registerAbilityBlock(mob.mobType, AbilityType.HUNT, -1)) {
+            if (AbilityBlockManager.registerAbilityBlock(mob.mobType, AbilityType.HUNT, "-1")) {
                 p.sendMessage("등록함")
             } else p.sendMessage("§c등록 실패.")
         }

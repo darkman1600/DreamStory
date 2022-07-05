@@ -1,8 +1,8 @@
 package kr.dreamstory.ability.ability.play.item
 
-import com.dreamstory.ability.manager.DropItemManager
-import com.dreamstory.ability.util.addNBTTagCompound
-import com.dreamstory.ability.util.integerFormat
+import kr.dreamstory.ability.manager.DropItemManager
+import kr.dreamstory.ability.util.addNBTTagCompound
+import kr.dreamstory.ability.util.integerFormat
 import org.bukkit.ChatColor
 import org.bukkit.inventory.ItemStack
 
