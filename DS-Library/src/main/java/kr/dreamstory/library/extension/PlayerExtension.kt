@@ -7,5 +7,8 @@ import org.bukkit.entity.Player
 val Player.economy
     get() = EconomyManager.getEconomy(uniqueId)
 
+val Player.money
+    get() = EconomyManager.getEconomy(uniqueId).cash
+
 val Player.database
     get() = PlayerDataManger.getPlayerData(uniqueId)
