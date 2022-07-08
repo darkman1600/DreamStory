@@ -2,6 +2,8 @@ package kr.dreamstory.ability.ability.play.ability
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.hud.HUDSkin
+import kr.dreamstory.library.coroutine.SynchronizationContext
+import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.data.PlayerDataManger
 import kr.dreamstory.library.extension.fromJson
 import kr.dreamstory.library.extension.toJson
@@ -44,10 +46,10 @@ data class Ability(val uuid: UUID) {
         exps[AbilityType.HUNT.index] = huntExp
 
         skills = arrayOf(
-            mineSkill?.fromJson()?: SkillTree(),
-            farmSkill?.fromJson()?: SkillTree(),
-            fishSkill?.fromJson()?: SkillTree(),
-            huntSkill?.fromJson()?: SkillTree()
+            mineSkill?.fromJson() ?: SkillTree(),
+            farmSkill?.fromJson() ?: SkillTree(),
+            fishSkill?.fromJson() ?: SkillTree(),
+            huntSkill?.fromJson() ?: SkillTree()
         )
         actionBar = parseActionBar()
     }
@@ -137,20 +139,21 @@ data class Ability(val uuid: UUID) {
     }
 
     fun updateData() {
-        val d = PlayerDataManger.getPlayerData(uuid)
-        d.set(main,"ability.mine.level", getLevel(AbilityType.MINE))
-        d.set(main,"ability.mine.exp", getExp(AbilityType.MINE))
-        d.set(main,"ability.farm.level", getLevel(AbilityType.FARM))
-        d.set(main,"ability.farm.exp", getExp(AbilityType.FARM))
-        d.set(main,"ability.fish.level", getLevel(AbilityType.FISH))
-        d.set(main,"ability.fish.exp", getExp(AbilityType.FISH))
-        d.set(main,"ability.hunt.level", getLevel(AbilityType.HUNT))
-        d.set(main,"ability.hunt.exp", getExp(AbilityType.HUNT))
-        d.set(main,"ability.mine.skill", getSkillTree(AbilityType.MINE).toJson())
-        d.set(main,"ability.hunt.skill", getSkillTree(AbilityType.FARM).toJson())
-        d.set(main,"ability.fish.skill", getSkillTree(AbilityType.FISH).toJson())
-        d.set(main,"ability.hunt.skill", getSkillTree(AbilityType.HUNT).toJson())
-        d.save()
+        val d = PlayerDataManger.getPlayerData(uuid) ?: return
+        main.server.scheduler.schedule(main,SynchronizationContext.ASYNC) {
+            d.set(main,"ability.mine.level", getLevel(AbilityType.MINE))
+            d.set(main,"ability.mine.exp", getExp(AbilityType.MINE))
+            d.set(main,"ability.farm.level", getLevel(AbilityType.FARM))
+            d.set(main,"ability.farm.exp", getExp(AbilityType.FARM))
+            d.set(main,"ability.fish.level", getLevel(AbilityType.FISH))
+            d.set(main,"ability.fish.exp", getExp(AbilityType.FISH))
+            d.set(main,"ability.hunt.level", getLevel(AbilityType.HUNT))
+            d.set(main,"ability.hunt.exp", getExp(AbilityType.HUNT))
+            d.set(main,"ability.mine.skill", getSkillTree(AbilityType.MINE).toJson())
+            d.set(main,"ability.hunt.skill", getSkillTree(AbilityType.FARM).toJson())
+            d.set(main,"ability.fish.skill", getSkillTree(AbilityType.FISH).toJson())
+            d.set(main,"ability.hunt.skill", getSkillTree(AbilityType.HUNT).toJson())
+        }
     }
 
     private fun parseActionBar(): String {
@@ -209,7 +212,7 @@ data class Ability(val uuid: UUID) {
 
         fun getUnicode(skinIndex: Int,index: Int): String = skins[skinIndex].array[index]
 
-        private fun getState(exp: Long, maxExp: Long,skinIndex:Int): String {
+        private fun getState(exp: Long, maxExp: Long, skinIndex:Int): String {
             val per = exp.toDouble() / maxExp.toDouble()
             val res = per * 39
             val a =  res.roundToInt()
