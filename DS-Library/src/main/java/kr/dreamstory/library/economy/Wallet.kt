@@ -9,12 +9,11 @@ class Wallet(
     cash: Long
 ) {
 
-    private val data = HashMap<PaymentType,Payment>()
+    private val data = mapOf(
+        PaymentType.MONEY to Money(money,PaymentType.MONEY),
+        PaymentType.CASH to Cash(cash,PaymentType.CASH)
+    )
 
-    init {
-        data[PaymentType.MONEY] = Money(money,PaymentType.MONEY)
-        data[PaymentType.CASH] = Cash(cash,PaymentType.CASH)
-    }
 
     @Deprecated(level = DeprecationLevel.WARNING, message = "type에 넣는 값과 대조되는 Payment자식 클래스가 있는지 확인.")
     fun getPayment(type: PaymentType) = data[type]

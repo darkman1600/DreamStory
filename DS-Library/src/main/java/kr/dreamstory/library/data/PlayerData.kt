@@ -43,7 +43,7 @@ class PlayerData(val uuid: UUID) {
 
     private fun updateWallet() {
         PaymentType.values().forEach {
-            set(main,"wallet.${it.name.lowercase()}", wallet.getPayment(it)!!.balance)
+            set(main,"wallet.${it.name.lowercase()}", wallet.getPayment(it)?.balance)
         }
     }
 
