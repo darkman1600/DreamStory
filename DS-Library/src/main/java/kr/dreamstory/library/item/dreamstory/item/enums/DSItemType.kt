@@ -9,8 +9,9 @@ enum class DSItemType(
 ) {
 
     DEFAULT("기본", Material.STONE,10),
-    TOOL("도구", Material.WOODEN_PICKAXE,11),
-    ARMOR("방어구", Material.NETHERITE_CHESTPLATE,12),
+    BLOCK("블록",Material.BRICK,11),
+    TOOL("도구", Material.WOODEN_PICKAXE,12),
+    ARMOR("방어구", Material.NETHERITE_CHESTPLATE,13),
     UPGRADE_STONE("강화 재료", Material.GLOWSTONE_DUST,14);
 
     companion object {
