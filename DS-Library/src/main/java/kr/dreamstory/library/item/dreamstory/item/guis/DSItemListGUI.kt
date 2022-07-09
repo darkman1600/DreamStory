@@ -22,7 +22,7 @@ class DSItemListGUI(val type: DSItemType): DSGUI(54,"§f서버 아이템 목록"
     override fun getEmptySlot(): List<Int> = listOf(46,47,48,49,50,51,52)
     override fun getPage(): Int = currentPage
     override fun setPage(page: Int) { currentPage = page }
-    override fun getItemList(): List<ItemStack> = DSItemManager.getDSItemStackList().filter { it.type == type }.map { it.itemStack }
+    override fun getItemList(): List<ItemStack> = DSItemManager.getDSItemTypeList(type).map { it.itemStack }
 
     override fun init() {
         setPageButton(inv)

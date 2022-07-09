@@ -30,6 +30,7 @@ object DSItemManager {
     fun getDSItemKeyList() = item_instance.keys
     fun getDSItemStackList() = item_instance.values
     fun getDSItem(key: String) = item_instance[key]
+    fun getDSItemTypeList(type: DSItemType) = item_instance.values.filter { it.type == type }
 
     fun getNewDSItem(key: String,itemStack: ItemStack,canTrade: Boolean): DSItemStack = DSDefaultItem(key,itemStack,canTrade,
         DSItemTier.DEFAULT)
