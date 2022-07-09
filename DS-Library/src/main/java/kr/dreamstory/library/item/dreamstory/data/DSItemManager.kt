@@ -5,10 +5,7 @@ import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.item.dreamstory.item.*
 import kr.dreamstory.library.item.dreamstory.item.enums.DSItemTier
 import kr.dreamstory.library.item.dreamstory.item.enums.DSItemType
-import kr.dreamstory.library.item.dreamstory.item.objs.DSArmor
-import kr.dreamstory.library.item.dreamstory.item.objs.DSDefaultItem
-import kr.dreamstory.library.item.dreamstory.item.objs.DSTool
-import kr.dreamstory.library.item.dreamstory.item.objs.DSUpgradeStone
+import kr.dreamstory.library.item.dreamstory.item.objs.*
 import kr.dreamstory.library.item.minecraft.color
 import kr.dreamstory.library.item.minecraft.setStringNbt
 import kr.dreamstory.library.item.minecraft.translateHexColorCodes
@@ -87,6 +84,9 @@ object DSItemManager {
                             }
                             DSItemType.DEFAULT -> {
                                 dsItem = DSDefaultItem(key,item,trade,tier)
+                            }
+                            DSItemType.BLOCK -> {
+                                dsItem = DSBlock(key,item,trade,tier)
                             }
                             DSItemType.UPGRADE_STONE -> {
                                 val upgradeTypeTag = getString("$key.upgrade_type") ?: run { MessageManager.pluginMessage(main,"$key 아이템의 §aupgrade_type §f값 없음."); return@loop }
