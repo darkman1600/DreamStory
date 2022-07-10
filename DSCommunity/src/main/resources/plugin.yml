@@ -1,0 +1,4 @@
+main: kr.dreamstory.community.DSCommunity
+version: 1.0.0
+name: DSCommunity
+api-version: 1.18
