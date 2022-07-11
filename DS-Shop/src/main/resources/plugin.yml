@@ -5,4 +5,4 @@ api-version: 1.18
 depend:
   - DS-Library
 commands:
-  상점:
+  shop:

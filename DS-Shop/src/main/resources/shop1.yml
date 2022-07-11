@@ -12,6 +12,7 @@ test:
           slot: 2
           itemKey: 'item1'
           price: 100
+
         item2:
           slot: 3
           itemKey: 'item2'

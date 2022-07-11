@@ -3,4 +3,5 @@ version = "1.0-SNAPSHOT"
 
 dependencies {
     implementation(project(":DS-Library"))
+    implementation(project(":DS-Ability"))
 }
