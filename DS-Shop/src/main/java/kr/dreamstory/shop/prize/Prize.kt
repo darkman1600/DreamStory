@@ -1,7 +1,7 @@
 package kr.dreamstory.shop.prize
 
+import kr.dreamstory.library.extension.addLores
 import kr.dreamstory.library.item.dreamstory.data.DSItemManager
-import kr.dreamstory.library.item.minecraft.addLores
 import kr.dreamstory.library.item.minecraft.api.ItemStackBuilder
 import kr.dreamstory.shop.prize.Price.Companion.getColorFormat
 import kr.dreamstory.shop.prize.Price.Companion.getStringFormat

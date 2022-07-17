@@ -6,9 +6,9 @@ import kr.dreamstory.library.item.dreamstory.item.*
 import kr.dreamstory.library.item.dreamstory.item.enums.DSItemTier
 import kr.dreamstory.library.item.dreamstory.item.enums.DSItemType
 import kr.dreamstory.library.item.dreamstory.item.objs.*
-import kr.dreamstory.library.item.minecraft.color
+import kr.dreamstory.library.extension.color
 import kr.dreamstory.library.extension.setStringNbt
-import kr.dreamstory.library.item.minecraft.translateHexColorCodes
+import kr.dreamstory.library.extension.translateHexColorCodes
 import kr.dreamstory.library.main
 import kr.dreamstory.library.message.MessageManager
 import org.bukkit.Material

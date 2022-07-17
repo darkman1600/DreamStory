@@ -1,4 +1,4 @@
-package kr.dreamstory.library.item.minecraft
+package kr.dreamstory.library.extension
 
 import org.bukkit.ChatColor
 import org.bukkit.Material
