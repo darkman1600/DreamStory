@@ -1,7 +1,7 @@
 package kr.dreamstory.ability.ability.play.region
 
-import kr.dreamstory.ability.api.DSCoreAPI
 import com.google.common.collect.Lists
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -38,7 +38,7 @@ class RegionGUI(region: Region, clone: Region?): DSGUI(9, "지역 관리", regio
         when(rawSlot) {
             0-> {
                 tempClose = true
-                DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "§f＆ 는 색 코드 입니다.", "§c취소 : - 입력"))
+                DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "§f＆ 는 색 코드 입니다.", "§c취소 : - 입력"))
                     .response(BiPredicate { p, lines ->
                         var text = lines[0]
                         if(text == "-") {
@@ -54,7 +54,7 @@ class RegionGUI(region: Region, clone: Region?): DSGUI(9, "지역 관리", regio
             }
             1-> {
                 tempClose = true
-                DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "", "§c취소 : - 입력"))
+                DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "", "§c취소 : - 입력"))
                     .response(BiPredicate { p, lines ->
                         var text = lines[0]
                         if(text == "-") {

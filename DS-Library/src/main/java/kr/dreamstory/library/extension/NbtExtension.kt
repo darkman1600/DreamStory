@@ -1,4 +1,4 @@
-package kr.dreamstory.library.item.minecraft
+package kr.dreamstory.library.extension
 
 import kr.dreamstory.library.item.dreamstory.item.DSItemStack
 import kr.dreamstory.library.item.dreamstory.data.DSItemManager

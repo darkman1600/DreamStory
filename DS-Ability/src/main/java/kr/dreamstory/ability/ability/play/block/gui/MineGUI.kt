@@ -1,9 +1,9 @@
 package kr.dreamstory.ability.ability.play.block.gui
 
 import kr.dreamstory.ability.ability.play.block.MineObject
-import kr.dreamstory.ability.api.DSCoreAPI
 import kr.dreamstory.ability.manager.AbilityBlockManager
 import com.google.common.collect.Lists
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -54,7 +54,7 @@ class MineGUI(mineBlock: MineObject): DSGUI(9, "채굴 블럭 설정",mineBlock)
             when(slot) {
                 1-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val hp = lines[0]
                             if(hp == "-") {
@@ -75,7 +75,7 @@ class MineGUI(mineBlock: MineObject): DSGUI(9, "채굴 블럭 설정",mineBlock)
                 }
                 3-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -96,7 +96,7 @@ class MineGUI(mineBlock: MineObject): DSGUI(9, "채굴 블럭 설정",mineBlock)
                 }
                 4-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -117,7 +117,7 @@ class MineGUI(mineBlock: MineObject): DSGUI(9, "채굴 블럭 설정",mineBlock)
                 }
                 5-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -138,7 +138,7 @@ class MineGUI(mineBlock: MineObject): DSGUI(9, "채굴 블럭 설정",mineBlock)
                 }
                 6-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "", ""))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "", ""))
                         .response(BiPredicate { p, lines ->
                             var text = lines[0]
                             if(text == "-") {

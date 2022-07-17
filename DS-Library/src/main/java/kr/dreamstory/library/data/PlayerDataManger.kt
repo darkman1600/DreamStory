@@ -3,28 +3,46 @@ package kr.dreamstory.library.data
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.main
-import kr.dreamstory.library.message.MessageManager
-import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.block.Skull
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.SkullMeta
 import java.util.UUID
 
 object PlayerDataManger {
     private val dataMap = HashMap<UUID,PlayerData>()
 
-    fun getPlayerData(uuid: UUID) = dataMap[uuid] ?: register(uuid)
-    fun register(uuid: UUID): PlayerData? {
-        return try {
-            dataMap[uuid] = PlayerData(uuid)
-            dataMap[uuid]
-        } catch (e: Exception) {
-            val player = Bukkit.getPlayer(uuid)
-            val name = player?.name ?: uuid.toString()
-            MessageManager.pluginMessage(main,"[ §e$name §f] 님의 데이터를 로드하는데 실패하였습니다.")
-            player?.kickPlayer("데이터를 불러오는데 실패하였습니다.\n같은 현상이 반복될 경우,\n관리자에게 문의하세요.")
-            null
+    fun getPlayerData(uuid: UUID,offline: Boolean = false): PlayerData {
+        return if(offline) {
+            PlayerData(uuid)
+        } else {
+            val data = dataMap[uuid]
+            if(data == null) {
+                val newData = PlayerData(uuid)
+                dataMap[uuid] = newData
+                dataMap[uuid]!!
+            } else {
+                data
+            }
         }
     }
-    fun unregister(uuid: UUID) { dataMap.remove(uuid) }
+    fun getOfflinePlayerData(uuid: UUID): PlayerData = PlayerData(uuid)
+    fun register(player: Player) {
+        val uuid = player.uniqueId
+        val newData = PlayerData(uuid)
+        newData.setName(player.name)
+
+        if(!newData.hasPlayedBefore) {
+            val headBase = ItemStack(Material.PLAYER_HEAD)
+            val headMeta = headBase.itemMeta as SkullMeta
+            headMeta.owningPlayer = player
+            headBase.itemMeta = headMeta
+            newData.setHead(headBase)
+        }
+
+        dataMap[uuid] = newData
+    }
 
     private val quitSet = HashSet<UUID>()
 
@@ -61,6 +79,7 @@ object PlayerDataManger {
                 DataUpdateEvent().callEvent()
                 waitFor(40)
                 DataSaveEvent().callEvent()
+                main.server.broadcastMessage("저장")
                 saveAll()
             }
         }

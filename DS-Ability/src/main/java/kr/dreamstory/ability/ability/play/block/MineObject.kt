@@ -13,8 +13,8 @@ import kr.dreamstory.ability.util.doubleFormat
 import kr.dreamstory.library.coroutine.CoroutineTask
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
-import kr.dreamstory.library.item.minecraft.getDoubleNbt
-import kr.dreamstory.library.item.minecraft.getIntNbt
+import kr.dreamstory.library.extension.getDoubleNbt
+import kr.dreamstory.library.extension.getIntNbt
 import net.minecraft.server.level.EntityPlayer
 import org.bukkit.Color
 import org.bukkit.Material

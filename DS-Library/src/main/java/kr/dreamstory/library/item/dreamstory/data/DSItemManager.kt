@@ -7,7 +7,7 @@ import kr.dreamstory.library.item.dreamstory.item.enums.DSItemTier
 import kr.dreamstory.library.item.dreamstory.item.enums.DSItemType
 import kr.dreamstory.library.item.dreamstory.item.objs.*
 import kr.dreamstory.library.item.minecraft.color
-import kr.dreamstory.library.item.minecraft.setStringNbt
+import kr.dreamstory.library.extension.setStringNbt
 import kr.dreamstory.library.item.minecraft.translateHexColorCodes
 import kr.dreamstory.library.main
 import kr.dreamstory.library.message.MessageManager
@@ -90,7 +90,7 @@ object DSItemManager {
                             }
                             DSItemType.UPGRADE_STONE -> {
                                 val upgradeTypeTag = getString("$key.upgrade_type") ?: run { MessageManager.pluginMessage(main,"$key 아이템의 §aupgrade_type §f값 없음."); return@loop }
-                                val upgradeType = DSItemType.getDSItemType(upgradeTypeTag) ?: run { MessageManager.pluginMessage(main,"$key 아이템의 §aupgrade_type §f값 오류."); return@loop }
+                                val upgradeType = DSItemType.getDSItemType(upgradeTypeTag.toUpperCase()) ?: run { MessageManager.pluginMessage(main,"$key 아이템의 §aupgrade_type §f값 오류."); return@loop }
                                 dsItem = DSUpgradeStone(key,item,trade,tier,upgradeType)
                             }
                         }

@@ -1,12 +1,12 @@
 package kr.dreamstory.ability.java.worldguard.events;
 
-import kr.dreamstory.ability.api.DSCoreAPI;
 import kr.dreamstory.ability.core.sub.ChannelCore;
 import com.dreamstory.ability.listener.interfaces.ChannelListener;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import kr.dreamstory.ability.ability.VariableKt;
 import kr.dreamstory.ability.java.worldguard.WorldGuardSupport;
+import kr.dreamstory.library.DSLibraryAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -17,7 +17,7 @@ import org.bukkit.plugin.PluginManager;
 
 public class PlayerMoveListener implements ChannelListener {
 
-    private DSCoreAPI api;
+    private DSLibraryAPI api;
     private ChannelCore main;
     private WorldGuard wg;
     private WorldGuardSupport wgUtils;
@@ -25,7 +25,7 @@ public class PlayerMoveListener implements ChannelListener {
 
     public PlayerMoveListener() {
         this.main = (ChannelCore) VariableKt.getSubCore();
-        api = DSCoreAPI.INSTANCE;
+        api = DSLibraryAPI.INSTANCE;
         wgUtils = main.getWorldGuardSupport();
         wg = wgUtils.getWorldGuard();
         pluginManager = main.getServer().getPluginManager();

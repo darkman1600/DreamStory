@@ -1,0 +1,10 @@
+main: kr.dreamstory.community.DSCommunity
+version: 1.0.0
+name: DSCommunity
+api-version: 1.18
+commands:
+  채팅모드:
+  차단:
+  친구:
+  친구관리:
+    permission: dreamstory.permission.op

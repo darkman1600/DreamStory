@@ -1,6 +1,6 @@
 package kr.dreamstory.shop.prize
 
-import kr.dreamstory.library.item.minecraft.addLore
+import kr.dreamstory.library.extension.addLore
 import org.bukkit.inventory.ItemStack
 
 class Prize(

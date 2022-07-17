@@ -1,9 +1,9 @@
 package kr.dreamstory.ability.ability.play.block.gui
 
 import kr.dreamstory.ability.ability.play.block.FarmObject
-import kr.dreamstory.ability.api.DSCoreAPI
 import kr.dreamstory.ability.manager.AbilityBlockManager
 import com.google.common.collect.Lists
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -55,7 +55,7 @@ class FarmGUI(farmBlock: FarmObject): DSGUI(9, "채집 블럭 설정",farmBlock)
             when(slot) {
                 1-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             p.sendMessage("통과")
                             val text = lines[0]
@@ -77,7 +77,7 @@ class FarmGUI(farmBlock: FarmObject): DSGUI(9, "채집 블럭 설정",farmBlock)
                 }
                 2-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -98,7 +98,7 @@ class FarmGUI(farmBlock: FarmObject): DSGUI(9, "채집 블럭 설정",farmBlock)
                 }
                 3-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -119,7 +119,7 @@ class FarmGUI(farmBlock: FarmObject): DSGUI(9, "채집 블럭 설정",farmBlock)
                 }
                 4-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -140,7 +140,7 @@ class FarmGUI(farmBlock: FarmObject): DSGUI(9, "채집 블럭 설정",farmBlock)
                 }
                 5-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -161,7 +161,7 @@ class FarmGUI(farmBlock: FarmObject): DSGUI(9, "채집 블럭 설정",farmBlock)
                 }
                 6-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "", ""))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "", ""))
                         .response(BiPredicate { p, lines ->
                             var text = lines[0]
                             if(text == "-") {

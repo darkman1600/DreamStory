@@ -4,10 +4,10 @@ import kr.dreamstory.library.item.dreamstory.item.DSItemStack
 import kr.dreamstory.library.item.dreamstory.item.enums.DSItemTier
 import kr.dreamstory.library.item.dreamstory.item.enums.DSItemType
 import kr.dreamstory.library.item.dreamstory.item.interfaces.UpgradeAble
-import kr.dreamstory.library.item.minecraft.getIntNbt
-import kr.dreamstory.library.item.minecraft.setIntNbt
-import kr.dreamstory.library.item.minecraft.setLores
-import kr.dreamstory.library.item.minecraft.setName
+import kr.dreamstory.library.extension.getIntNbt
+import kr.dreamstory.library.extension.setIntNbt
+import kr.dreamstory.library.extension.setLores
+import kr.dreamstory.library.extension.setName
 import org.bukkit.inventory.ItemStack
 
 class DSTool(

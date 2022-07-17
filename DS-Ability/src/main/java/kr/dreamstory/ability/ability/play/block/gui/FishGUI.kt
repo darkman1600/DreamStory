@@ -1,9 +1,9 @@
 package kr.dreamstory.ability.ability.play.block.gui
 
 import kr.dreamstory.ability.ability.play.block.FishObject
-import kr.dreamstory.ability.api.DSCoreAPI
 import kr.dreamstory.ability.manager.AbilityBlockManager
 import com.google.common.collect.Lists
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -54,7 +54,7 @@ class FishGUI(fishBlock: FishObject): DSGUI(9, "낚시 바이옴 설정",fishBlo
             when(slot) {
                 1-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
@@ -75,7 +75,7 @@ class FishGUI(fishBlock: FishObject): DSGUI(9, "낚시 바이옴 설정",fishBlo
                 }
                 2-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
@@ -96,7 +96,7 @@ class FishGUI(fishBlock: FishObject): DSGUI(9, "낚시 바이옴 설정",fishBlo
                 }
                 3-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
@@ -117,7 +117,7 @@ class FishGUI(fishBlock: FishObject): DSGUI(9, "낚시 바이옴 설정",fishBlo
                 }
                 4-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
@@ -138,7 +138,7 @@ class FishGUI(fishBlock: FishObject): DSGUI(9, "낚시 바이옴 설정",fishBlo
                 }
                 5-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {
@@ -159,7 +159,7 @@ class FishGUI(fishBlock: FishObject): DSGUI(9, "낚시 바이옴 설정",fishBlo
                 }
                 6-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "1. 최소 2. 최대", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "1. 최소 2. 최대", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if (text.equals("-", ignoreCase = true)) {

@@ -2,9 +2,9 @@ package kr.dreamstory.ability.ability.play.block.gui
 
 import kr.dreamstory.ability.ability.play.block.HuntObject
 import kr.dreamstory.ability.ability.play.block.obj.MobType
-import kr.dreamstory.ability.api.DSCoreAPI
 import kr.dreamstory.ability.manager.AbilityBlockManager
 import com.google.common.collect.Lists
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.gui.DSGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -60,7 +60,7 @@ class HuntGUI(huntBlock: HuntObject): DSGUI(9, huntBlock.mobName,huntBlock) {
                 }
                 2-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "삭제 : ! 입력", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "삭제 : ! 입력", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -83,7 +83,7 @@ class HuntGUI(huntBlock: HuntObject): DSGUI(9, huntBlock.mobName,huntBlock) {
                 }
                 3-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -104,7 +104,7 @@ class HuntGUI(huntBlock: HuntObject): DSGUI(9, huntBlock.mobName,huntBlock) {
                 }
                 4-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -125,7 +125,7 @@ class HuntGUI(huntBlock: HuntObject): DSGUI(9, huntBlock.mobName,huntBlock) {
                 }
                 5-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {
@@ -146,7 +146,7 @@ class HuntGUI(huntBlock: HuntObject): DSGUI(9, huntBlock.mobName,huntBlock) {
                 }
                 6-> {
                     player.closeInventory()
-                    DSCoreAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
+                    DSLibraryAPI.signMenuFactory.newMenu(Lists.newArrayList("", "", "숫자만 입력하세요.", "§c취소 : - 입력"))
                         .response(BiPredicate { p, lines ->
                             val text = lines[0]
                             if(text == "-") {

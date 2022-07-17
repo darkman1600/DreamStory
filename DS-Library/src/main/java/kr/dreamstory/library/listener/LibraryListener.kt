@@ -14,8 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 class LibraryListener: Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        val uuid = event.player.uniqueId
-        PlayerDataManger.register(uuid)
+        PlayerDataManger.register(event.player)
     }
 
     @EventHandler

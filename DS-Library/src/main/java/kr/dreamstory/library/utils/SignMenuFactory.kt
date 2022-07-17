@@ -1,10 +1,13 @@
-package kr.dreamstory.ability.util
+package kr.dreamstory.library.utils
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketAdapter
 import com.comphenix.protocol.events.PacketEvent
 import com.comphenix.protocol.wrappers.BlockPosition
+import kr.dreamstory.library.coroutine.SynchronizationContext
+import kr.dreamstory.library.coroutine.schedule
+import kr.dreamstory.library.main
 import net.minecraft.network.protocol.game.PacketPlayOutOpenSignEditor
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.entity.TileEntitySign
@@ -34,7 +37,10 @@ class SignMenuFactory(private val plugin: Plugin) {
                     event.isCancelled = true
                     val success = menu.response!!.test(player, event.packet.stringArrays.read(0))
                     if (!success) {
-                        Bukkit.getScheduler().runTaskLater(plugin, Runnable { menu.open(player) }, 2L)
+                        main.schedule(SynchronizationContext.SYNC) {
+                            waitFor(2)
+                            menu.open(player)
+                        }
                     }
                     player.sendBlockChange(menu.position!!.toLocation(player.world), Material.AIR.createBlockData())
                 }
@@ -64,15 +70,16 @@ class SignMenuFactory(private val plugin: Plugin) {
         fun open(player: Player) {
             val craftPlayer = (player as CraftPlayer).handle
             val location = player.location.apply { y = .0 }
-            val blockPosition = net.minecraft.core.BlockPosition(location.blockX, 0, location.blockZ)
+            position = BlockPosition(location.blockX,0,location.blockZ)
+            val nmsPosition = net.minecraft.core.BlockPosition(location.blockX,0,location.blockZ)
             player.sendBlockChange(location.apply { y = .0 },Material.OAK_SIGN.createBlockData())
             val lores = text.map { CraftChatMessage.fromString(it)[0] }
-            val sign = TileEntitySign(blockPosition, Blocks.cg.n())
+            val sign = TileEntitySign(nmsPosition,Blocks.b.n())
             sign.apply {
                 for(i in 0..3) a(i,lores[i])
             }
             craftPlayer.b.a(sign.c())
-            val signPacket = PacketPlayOutOpenSignEditor(blockPosition)
+            val signPacket = PacketPlayOutOpenSignEditor(nmsPosition)
             craftPlayer.b.a(signPacket)
 
             inputReceivers[player] = this
@@ -83,15 +90,8 @@ class SignMenuFactory(private val plugin: Plugin) {
         }
     }
 
-    companion object {
-        private const val ACTION_INDEX = 9
-        private const val SIGN_LINES = 4
-        private const val NBT_FORMAT = "{\"text\":\"%s\"}"
-        private const val NBT_BLOCK_ID = "minecraft:sign"
-    }
-
     init {
-        inputReceivers = HashMap()
+        inputReceivers = java.util.HashMap()
         listen()
     }
 }

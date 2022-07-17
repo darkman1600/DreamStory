@@ -10,12 +10,13 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/DS-Ability" />
+            <option value="$PROJECT_DIR$/DS-Community" />
             <option value="$PROJECT_DIR$/DS-Craft" />
             <option value="$PROJECT_DIR$/DS-Island" />
             <option value="$PROJECT_DIR$/DS-Library" />
+            <option value="$PROJECT_DIR$/DS-PlayerOptions" />
             <option value="$PROJECT_DIR$/DS-Shop" />
             <option value="$PROJECT_DIR$/DS-Trade" />
-            <option value="$PROJECT_DIR$/DSCommunity" />
           </set>
         </option>
       </GradleProjectSettings>
