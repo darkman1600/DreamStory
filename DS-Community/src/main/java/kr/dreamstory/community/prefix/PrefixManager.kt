@@ -15,16 +15,12 @@ object PrefixManager {
     private val prefixMap = HashMap<String,Prefix>()
     fun getPrefix(display: String) = prefixMap[display]
 
-    fun addPrefix(uuid: UUID, key: String, offline: Boolean = false) {
+    fun addPrefix(uuid: UUID, key: String) {
         val prefix = getPrefix(key) ?: return
-        val d = PlayerDataManger.getPlayerData(uuid)
-        if(offline) {
-            d.addToStringList(main,"prefix_list",key,true)
-        } else {
-            val cd = CommunityManager.getState(uuid)
-            cd.prefixList.add(prefix)
-            d.addToStringList(main,"prefix_list",key)
-        }
+        val d = PlayerDataManger.getPlayerData(uuid)!!
+        val cd = CommunityManager.getCommunityData(uuid)!!
+        cd.prefixList.add(prefix)
+        d.set("prefix_list",cd.prefixList)
     }
 
     fun loadPrefix() {

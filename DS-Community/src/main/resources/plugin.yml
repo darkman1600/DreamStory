@@ -1,6 +1,6 @@
 main: kr.dreamstory.community.DSCommunity
 version: 1.0.0
-name: DSCommunity
+name: DS-Community
 api-version: 1.18
 commands:
   채팅모드:

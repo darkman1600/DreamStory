@@ -15,7 +15,7 @@ class OptionGUI: DSGUI(27,"개인 설정") {
 
     override fun init() {
         setItem(10, ItemStack(Material.PLAYER_HEAD))
-
+        setItem(11,ItemStack(Material.REPEATER))
     }
 
     override fun InventoryClickEvent.clickEvent() {
@@ -24,6 +24,9 @@ class OptionGUI: DSGUI(27,"개인 설정") {
         when(rawSlot) {
             10 -> {
                 CommunityGUI(player).open(player)
+            }
+            11 -> {
+                UIOptionGUI(player).open(player)
             }
         }
     }

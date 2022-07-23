@@ -8,5 +8,5 @@ import kr.dreamstory.library.data.PlayerDataManger
 import kr.dreamstory.library.extension.toJson
 import org.bukkit.entity.Player
 
-val Player.ability: Ability
+val Player.ability: Ability?
     get() = AbilityManager.getAbility(uniqueId)

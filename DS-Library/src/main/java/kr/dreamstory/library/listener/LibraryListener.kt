@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 class LibraryListener: Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        PlayerDataManger.register(event.player)
+        PlayerDataManger.loadPlayerData(event.player)
     }
 
     @EventHandler

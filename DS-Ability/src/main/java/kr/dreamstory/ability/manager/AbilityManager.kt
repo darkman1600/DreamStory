@@ -1,5 +1,6 @@
 package kr.dreamstory.ability.manager
 
+import kotlinx.coroutines.*
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.Ability
 import kr.dreamstory.library.coroutine.SynchronizationContext
@@ -10,29 +11,29 @@ import java.util.*
 
 object AbilityManager {
 
-    val abilityMap = HashMap<UUID, Ability>()
+    private val abilityMap = HashMap<UUID, Ability>()
 
-    fun removeData(uuid: UUID) { abilityMap.remove(uuid) }
-    fun getAbility(uuid: UUID): Ability = abilityMap[uuid]!!
-    fun loadAbility(uuid: UUID): Ability? {
-        val d = PlayerDataManger.getPlayerData(uuid) ?: return null
+    fun getAbility(uuid: UUID): Ability? = abilityMap[uuid]
+    fun loadAbility(d: PlayerData): Boolean {
+        val uuid = d.uuid
         val ability = Ability(
             uuid,
-            d.getInt(main,"ability.mine.level"),
-            d.getLong(main,"ability.mine.exp"),
-            d.getInt(main,"ability.farm.level"),
-            d.getLong(main,"ability.farm.exp"),
-            d.getInt(main,"ability.fish.level"),
-            d.getLong(main,"ability.fish.exp") ,
-            d.getInt(main,"ability.hunt.level"),
-            d.getLong(main,"ability.hunt.exp"),
-            d.getStringOrNull(main,"ability.mine.skill"),
-            d.getStringOrNull(main,"ability.farm.skill"),
-            d.getStringOrNull(main,"ability.fish.skill"),
-            d.getStringOrNull(main,"ability.hunt.skill")
+            d.getInt("ability.mine.level"),
+            d.getLong("ability.mine.exp"),
+            d.getInt("ability.farm.level"),
+            d.getLong("ability.farm.exp"),
+            d.getInt("ability.fish.level"),
+            d.getLong("ability.fish.exp") ,
+            d.getInt("ability.hunt.level"),
+            d.getLong("ability.hunt.exp"),
+            d.getStringOrNull("ability.mine.skill"),
+            d.getStringOrNull("ability.farm.skill"),
+            d.getStringOrNull("ability.fish.skill"),
+            d.getStringOrNull("ability.hunt.skill"),
+            d.getBoolean("ability.actionbar.enable",true)
         )
         abilityMap[uuid] = ability
-        return abilityMap[uuid]
+        return true
     }
 
     fun saveAndQuit(uuid: UUID) {
@@ -44,4 +45,5 @@ object AbilityManager {
             abilityMap.values.forEach { it.updateData() }
         }
     }
+
 }

@@ -74,7 +74,7 @@ object CommandManager {
                     waitFor(1)
                     try {
                         val hand = p.inventory.itemInMainHand
-                        val tree = p.ability.getSkillTree(hand.type) ?: return@schedule
+                        val tree = p.ability?.getSkillTree(hand.type) ?: return@schedule
                         val skill = tree.getSkill(current)
                         if (skill == null || !isAbilityTool(hand.type)) p.sendTitle("no", null, 0, 40, 20)
                         else {

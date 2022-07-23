@@ -5,4 +5,4 @@ import kr.dreamstory.community.chat.CommunityData
 import kr.dreamstory.library.data.PlayerData
 
 val PlayerData.communityData: CommunityData?
-    get() = CommunityManager.getState(uuid)
+    get() = CommunityManager.getCommunityData(uuid)

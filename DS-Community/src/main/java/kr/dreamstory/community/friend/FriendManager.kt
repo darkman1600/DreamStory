@@ -23,10 +23,12 @@ object FriendManager {
         }
         val reqUUID = req.uniqueId
         val recUUID = rec.uniqueId
-        CommunityManager.getState(reqUUID).friends.add(recUUID)
-        CommunityManager.getState(recUUID).friends.add(reqUUID)
-        PlayerDataManger.getPlayerData(reqUUID).addToStringList(main,"friends",recUUID.toString())
-        PlayerDataManger.getPlayerData(recUUID).addToStringList(main,"friends",reqUUID.toString())
+        val reqFriends = CommunityManager.getCommunityData(reqUUID)!!.friends
+        val recFriends = CommunityManager.getCommunityData(recUUID)!!.friends
+        reqFriends.add(recUUID)
+        recFriends.add(reqUUID)
+        PlayerDataManger.getPlayerData(reqUUID)!!.set("friend_list",reqFriends.map { it.toString() })
+        PlayerDataManger.getPlayerData(recUUID)!!.set("friend_list",recFriends.map { it.toString() })
         req.sendMessage("§e${rec.name} §f님과 친구가 되었습니다.")
         rec.sendMessage("§e${req.name} §f님과 친구가 되었습니다.")
         return true
@@ -39,7 +41,7 @@ object FriendManager {
             rec.sendMessage("§a${factory.type.display} §f요청 먼저 처리하세요.")
             return false
         }
-        if(CommunityManager.getState(req.uniqueId).friends.contains(rec.uniqueId)) {
+        if(CommunityManager.getCommunityData(req.uniqueId)!!.friends.contains(rec.uniqueId)) {
             req.sendMessage("이미 해당 유저와 친구입니다.")
             return false
         }
@@ -77,16 +79,16 @@ object FriendManager {
                 return@schedule
             }
             val friendUUID = friend.uniqueId
-            val pFriends = CommunityManager.getState(uuid).friends
-            val fFriends = CommunityManager.getState(friendUUID,!friend.isOnline).friends
+            val pFriends = CommunityManager.getCommunityData(uuid)!!.friends
+            val fFriends = CommunityManager.getOfflineCommunityData(friendUUID)!!.friends
             if(!pFriends.contains(friendUUID)) {
                 player.sendMessage("친구 목록에서 찾을 수 없습니다.")
                 return@schedule
             }
             pFriends.remove(friendUUID)
             fFriends.remove(uuid)
-            PlayerDataManger.getPlayerData(uuid).set(main,"friends",pFriends.map { it.toString() })
-            PlayerDataManger.getPlayerData(friendUUID,!friend.isOnline).set(main,"friends",fFriends.map { it.toString() },!friend.isOnline)
+            PlayerDataManger.getPlayerData(uuid)!!.set("friend_list",pFriends.map { it.toString() })
+            PlayerDataManger.getOfflinePlayerData(friendUUID)!!.set("friend_list",fFriends.map { it.toString() },!friend.isOnline)
             player.sendMessage("${friend.name} 님이 친구 목록에서 삭제되었습니다.")
             friend.player?.sendMessage("${player.name} 님이 친구 목록에서 삭제되었습니다.")
         }

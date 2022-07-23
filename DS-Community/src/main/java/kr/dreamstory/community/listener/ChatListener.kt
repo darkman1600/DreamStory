@@ -13,13 +13,10 @@ class ChatListener: Listener {
     @EventHandler
     fun onChat(event: AsyncChatEvent) {
         main.schedule(SynchronizationContext.ASYNC) {
-            CommunityManager.getState(event.player.uniqueId).onDSChat(event)
+            CommunityManager.getCommunityData(event.player.uniqueId)!!.onDSChat(event)
         }
     }
-    @EventHandler
-    fun onJoin(event: PlayerJoinEvent) {
-        CommunityManager.register(event.player.uniqueId)
-    }
+
     @EventHandler
     fun onQuit(event: PlayerJoinEvent) {
         CommunityManager.unregister(event.player.uniqueId)

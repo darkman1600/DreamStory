@@ -28,14 +28,6 @@ class PlayerDataListener: Listener {
     }
 
     @EventHandler
-    fun onJoin(e: PlayerJoinEvent) {
-        main.server.scheduler.schedule(main,SynchronizationContext.ASYNC) {
-            AbilityManager.loadAbility(e.player.uniqueId)
-        }
-    }
-
-
-    @EventHandler
     fun onUpdate(e: DataUpdateEvent) {
         AbilityManager.updateAll()
     }

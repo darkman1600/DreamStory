@@ -6,6 +6,8 @@ import kr.dreamstory.library.message.MessageManager
 import kr.dreamstory.library.utils.SignMenuFactory
 
 object DSLibraryAPI {
+    fun getInstance() = main
+
     fun getDataFolder() = main.dataFolder
     val messageManager = MessageManager
     val dsItemManager = DSItemManager

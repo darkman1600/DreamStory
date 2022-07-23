@@ -9,7 +9,7 @@ import kr.dreamstory.ability.listener.DSDefaultListener
 import com.dreamstory.ability.listener.PlayerDataListener
 import com.dreamstory.ability.listener.SuperJumpListener
 import com.dreamstory.ability.listener.ability.*
-import kr.dreamstory.ability.manager.TaskManager
+import kr.dreamstory.ability.manager.ActionBarManager
 import kr.dreamstory.ability.commands.*
 import kr.dreamstory.ability.listener.ability.AbilityBlockListener
 import kr.dreamstory.ability.listener.ability.AbilityBlockRegisterListener
@@ -28,7 +28,7 @@ class DSAbility : JavaPlugin(), Listener {
         main = this
         subCore = ChannelCore(this)
         subCore.onEnable()
-        TaskManager.run(100)
+        ActionBarManager.run(100)
 
         cmd(mapOf(
             "특성툴" to AbilityBlockCommand(),

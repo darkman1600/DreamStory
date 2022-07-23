@@ -4,13 +4,10 @@ import kr.dreamstory.community.chat.CommunityManager
 import kr.dreamstory.community.request.events.RequestAcceptEvent
 import kr.dreamstory.community.request.events.RequestDefuseEvent
 import kr.dreamstory.community.request.events.RequestEvent
-import kr.dreamstory.library.DSLibraryAPI
-import kr.dreamstory.library.utils.SignMenuFactory
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
-import java.util.function.BiPredicate
 import kotlin.collections.HashMap
 
 object RequestManager {
@@ -43,7 +40,7 @@ object RequestManager {
             return
         }
         val recUUID = rec.uniqueId
-        if(CommunityManager.getState(recUUID).checkIgnored(reqUUID)) {
+        if(CommunityManager.getCommunityData(reqUUID)!!.ignoreMeList.contains(recUUID)) {
             req.sendMessage(Component.text("요청이 차단되었습니다."))
             return
         }

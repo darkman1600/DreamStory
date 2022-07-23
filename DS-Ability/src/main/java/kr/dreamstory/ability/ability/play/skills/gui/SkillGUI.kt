@@ -23,7 +23,7 @@ class SkillGUI(private val player: Player) : DSGUI(27, "스킬") {
 
     lateinit var ability: Ability
 
-    override fun firstInit() { ability = player.ability }
+    override fun firstInit() { ability = player.ability ?: return }
 
     override fun init() {
         voidSlots.forEach { setVoidSlot(it) }

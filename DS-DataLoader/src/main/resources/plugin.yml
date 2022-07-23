@@ -1,0 +1,8 @@
+name: DS-DataLoader
+main: kr.dreamstory.data_loader.DSDataLoader
+version: 1.0.0
+api-version: 1.18
+depend:
+  - DS-Library
+  - DS-Ability
+  - DS-Community

@@ -3,10 +3,9 @@ package kr.dreamstory.community.chat
 import io.papermc.paper.chat.ChatRenderer
 import io.papermc.paper.event.player.AsyncChatEvent
 import kr.dreamstory.ability.extension.region
-import kr.dreamstory.community.main
 import kr.dreamstory.community.prefix.Prefix
+import kr.dreamstory.library.data.PlayerData
 import kr.dreamstory.library.data.PlayerDataManger
-import kr.dreamstory.library.extension.database
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
@@ -16,45 +15,26 @@ import org.bukkit.entity.Player
 import world.bentobox.bentobox.BentoBox
 import java.util.UUID
 
-class CommunityData(uuid: UUID): ChatRenderer {
+class CommunityData(playerData: PlayerData): ChatRenderer {
 
-    var chatMode = ChatMode.DEFAULT
-        private set
-    fun setChatMode(mode: ChatMode) { chatMode = mode }
-
-    var prefixList = HashSet<Prefix>()
-    var prefix: Prefix? = Prefix("§6앙기모링")
-
-    val ignorePlayerList = HashSet<UUID>()
-    val ignoreMeList = HashSet<UUID>()
-    val friends = HashSet<UUID>()
-
-    fun checkIgnored(uuid: UUID): Boolean = ignorePlayerList.contains(uuid)
-    fun addIgnore(uuid: UUID) { ignorePlayerList.add(uuid) }
-    fun removeIgnore(uuid: UUID) { ignorePlayerList.remove(uuid) }
+    var chatMode: ChatMode = ChatMode.DEFAULT; private set
+    var prefix: Prefix? = null;                private set
+    var prefixList = ArrayList<Prefix>();      private set
+    var ignoreList = ArrayList<UUID>();        private set
+    var ignoreMeList = ArrayList<UUID>();      private set
+    var friends = ArrayList<UUID>();           private set
 
     init {
-        loadData(uuid)
+        chatMode = ChatMode.fromString(playerData.getStringOrNull("chat_mode") ?: "default") ?: ChatMode.DEFAULT
+        val prefixTag = playerData.getStringOrNull("prefix")
+        if(prefixTag != null) { prefix = Prefix(prefixTag) }
+        playerData.getStringList("prefix_list").forEach { prefixList.add(Prefix(it)) }
+        playerData.getStringList("ignore_list").forEach { ignoreList.add(UUID.fromString(it)) }
+        playerData.getStringList("ignore_me_list").forEach { ignoreMeList.add(UUID.fromString(it)) }
+        playerData.getStringList("friend_list").forEach { friends.add(UUID.fromString(it)) }
     }
 
-    private fun loadData(uuid: UUID) {
-        val data = PlayerDataManger.getOfflinePlayerData(uuid)
-        val pList = data.getStringList(main,"prefix")
-        if(pList.isNotEmpty()) pList.forEach { prefixList.add(Prefix(it)) }
-
-        val modeTag = data.getStringOrNull(main,"chat_mode") ?: "default"
-        val mode = ChatMode.fromString(modeTag.toUpperCase()) ?: ChatMode.DEFAULT
-        setChatMode(mode)
-
-        val igList = data.getStringList(main,"ignore_players")
-        igList.forEach { ignorePlayerList.add(UUID.fromString(it)) }
-
-        val igMeList = data.getStringList(main,"ignoreMe_players")
-        igMeList.forEach { ignoreMeList.add(UUID.fromString(it)) }
-
-        val fList = data.getStringList(main,"friends")
-        fList.forEach { friends.add(UUID.fromString(it)) }
-    }
+    fun setChatMode(chatMode: ChatMode) { this.chatMode = chatMode }
 
     fun filterViewers(sender: Player): MutableSet<out Audience> {
         val newSet = mutableSetOf<Player>()
@@ -82,9 +62,7 @@ class CommunityData(uuid: UUID): ChatRenderer {
                 newSet.addAll(fList)
             }
         }
-        newSet.removeAll {
-            CommunityManager.getState(it.uniqueId).checkIgnored(sender.uniqueId)
-        }
+        newSet.removeAll { ignoreMeList.contains(it.uniqueId) }
         return newSet
     }
 
@@ -103,7 +81,7 @@ class CommunityData(uuid: UUID): ChatRenderer {
     fun onDSChat(event: AsyncChatEvent) { event.chatEvent() }
 
     override fun render(player: Player, sourceDisplayName: Component, message: Component, viewer: Audience): Component {
-        val playerData = player.database
+        val playerData = PlayerDataManger.getPlayerData(player.uniqueId) ?: return Component.text("error")
         val perm = playerData.permission
         val permDisplay = Component.text(perm.font)
 

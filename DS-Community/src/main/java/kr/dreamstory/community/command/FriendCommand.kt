@@ -23,20 +23,6 @@ class FriendCommand: TabExecutor {
         }
         when(args.size) {
             1 -> return StringUtil.copyPartialMatches(args[0],listOf("신청","수락","삭제"),list)
-            2 -> {
-                when(args[0]) {
-                    "신청" -> {
-                        StringUtil.copyPartialMatches(args[1], Bukkit.getOnlinePlayers().map { it.name },list)
-                        list.remove(sender.name)
-                    }
-                    "삭제" -> {
-                        val friendsNames = CommunityManager.getState(sender.uniqueId).friends.mapNotNull {
-                            PlayerDataManger.getOfflinePlayerData(it).name
-                        }
-                        StringUtil.copyPartialMatches(args[1],friendsNames,list)
-                    }
-                }
-            }
         }
         return list
     }

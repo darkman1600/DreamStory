@@ -1,4 +1,4 @@
-name: PlayerOptions
+name: DS-PlayerOptions
 main: kr.dreamstory.player_options.PlayerOptions
 version: 1.0.0
 api-version: 1.18

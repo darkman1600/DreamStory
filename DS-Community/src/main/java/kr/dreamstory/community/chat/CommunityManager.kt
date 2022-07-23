@@ -5,25 +5,27 @@ import kr.dreamstory.library.data.PlayerDataManger
 import java.util.UUID
 
 object CommunityManager {
-    private val stateMap = HashMap<UUID, CommunityData>()
-    fun getState(uuid: UUID, offline: Boolean = false): CommunityData {
-        return if(offline) {
-            CommunityData(uuid)
+    private val dataMap = HashMap<UUID, CommunityData>()
+
+    fun getCommunityData(uuid: UUID): CommunityData? = dataMap[uuid]
+
+    @Deprecated("동기 스레드에서 사용하지 마세요.", level = DeprecationLevel.WARNING, replaceWith = ReplaceWith(""))
+    fun getOfflineCommunityData(uuid: UUID): CommunityData? {
+        val cd = dataMap[uuid]
+        return if(cd == null) {
+            val new = CommunityData(PlayerDataManger.getOfflinePlayerData(uuid) ?: return null)
+            dataMap[uuid] = new
+            dataMap[uuid]
         } else {
-            val state = stateMap[uuid]
-            if(state == null) {
-                val newState = CommunityData(uuid)
-                stateMap[uuid] = newState
-                stateMap[uuid]!!
-            } else {
-                state
-            }
+            cd
         }
     }
-    fun register(uuid: UUID) {
-        stateMap[uuid] = CommunityData(uuid)
+    fun loadCommunityData(playerData: PlayerData): Boolean {
+        val newData = CommunityData(playerData)
+        dataMap[playerData.uuid] = newData
+        return true
     }
     fun unregister(uuid: UUID) {
-        stateMap.remove(uuid)
+        dataMap.remove(uuid)
     }
 }

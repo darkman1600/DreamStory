@@ -3,7 +3,6 @@ package kr.dreamstory.community.gui
 import kr.dreamstory.community.chat.CommunityManager
 import kr.dreamstory.community.friend.FriendManager
 import kr.dreamstory.community.main
-import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.data.PlayerDataManger
@@ -11,20 +10,13 @@ import kr.dreamstory.library.extension.getStringNbt
 import kr.dreamstory.library.extension.setNameAndLore
 import kr.dreamstory.library.extension.setStringNbt
 import kr.dreamstory.library.gui.DSGUI
-import kr.dreamstory.library.gui.type.PageAble
-import kr.dreamstory.library.item.minecraft.api.Icons
 import kr.dreamstory.library.item.minecraft.api.ItemStackBuilder
-import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.SkullMeta
-import java.util.*
-import java.util.function.BiPredicate
 import kotlin.collections.ArrayList
 
 class FriendGUI(player: Player): DSGUI(36,"친구 관리",player) {
@@ -60,10 +52,10 @@ class FriendGUI(player: Player): DSGUI(36,"친구 관리",player) {
 
     private fun getFriendsHeads(): List<ItemStack> {
         val uuid = player.uniqueId
-        val state = CommunityManager.getState(uuid)
+        val state = CommunityManager.getCommunityData(uuid)!!
         val list = ArrayList<ItemStack>()
         for(fUUID in state.friends) {
-            val fData = PlayerDataManger.getPlayerData(fUUID,true)
+            val fData = PlayerDataManger.getOfflinePlayerData(fUUID)!!
             val head = fData.head ?: continue
             head.setNameAndLore("§e${fData.name}", listOf(
                 "좌클릭 - 귓속말",

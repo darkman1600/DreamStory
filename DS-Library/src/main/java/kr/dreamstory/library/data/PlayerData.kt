@@ -9,9 +9,11 @@ import kr.dreamstory.library.extension.toBase64
 import kr.dreamstory.library.extension.toItemStackFromBase64
 import kr.dreamstory.library.main
 import kr.dreamstory.library.permission.PermissionGrade
+import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.inventory.meta.SkullMeta
 import java.io.File
 import java.util.UUID
 
@@ -21,41 +23,47 @@ class PlayerData(val uuid: UUID) {
     private val dataMap = YamlConfiguration.loadConfiguration(file)
 
     val hasPlayedBefore = file.exists()
-    val name: String? = if(hasPlayedBefore) getStringOrNull(main,"name") else null
-    fun setName(str: String?) {
-        set(main,"name",str,true)
-    }
-    val head: ItemStack? = if(hasPlayedBefore) {
-        getStringOrNull(main,"head")?.toItemStackFromBase64()
-    } else {
-        null
-    }
-    fun setHead(itemStack: ItemStack) {
-        set(main,"head",itemStack.toBase64(),true)
+    var name: String? = getStringOrNull("name")
+        private set
+    var head: ItemStack? = getStringOrNull("head")?.toItemStackFromBase64()
+        private set
+
+    fun joinUpdate(player: Player) {
+        name = player.name
+        if(!hasPlayedBefore) {
+            val hb = ItemStack(Material.PLAYER_HEAD)
+            val hm = hb.itemMeta as SkullMeta
+            hm.owningPlayer = player
+            hb.itemMeta = hm
+            head = hb
+            set("head",head!!.toBase64())
+        }
+        set("name",name)
     }
 
-    fun getInt(plugin: JavaPlugin,key: String, default: Int = 0) = dataMap.getInt(plugin.name.lowercase() + "." + key, default)
-    fun getIntOrNull(plugin: JavaPlugin, key: String): Int? {
-        val str = dataMap.getString(plugin.name.lowercase() + "." + key) ?: return null
+    fun getInt(key: String, default: Int = 0) = dataMap.getInt(key, default)
+    fun getIntOrNull(key: String): Int? {
+        val str = dataMap.getString(key) ?: return null
         return str.toIntOrNull()
     }
-    fun getLong(plugin: JavaPlugin, key: String, default: Long = 0): Long = dataMap.getLong(plugin.name.lowercase() + "." + key,default)
-    fun getLongOrNull(plugin: JavaPlugin, key: String): Long? {
-        val str = dataMap.getString(plugin.name.lowercase() + "." + key) ?: return null
+    fun getLong(key: String, default: Long = 0): Long = dataMap.getLong(key,default)
+    fun getLongOrNull(key: String): Long? {
+        val str = dataMap.getString(key) ?: return null
         return str.toLongOrNull()
     }
-    fun getStringOrNull(plugin: JavaPlugin, key: String): String? { return dataMap.getString("${plugin.name.lowercase()}.$key") }
-    fun getStringList(plugin: JavaPlugin, key: String): List<String> { return dataMap.getStringList("${plugin.name.lowercase()}.$key") }
+    fun getStringOrNull(key: String): String? { return dataMap.getString(key) }
+    fun getStringList(key: String): List<String> { return dataMap.getStringList(key) }
+    fun getBoolean(key: String, default: Boolean = false): Boolean = dataMap.getBoolean(key,default)
 
-    fun set(plugin: JavaPlugin, key: String, value: Any?, save: Boolean = false) {
-        dataMap.set("${plugin.name.lowercase()}.$key",value)
+    fun set(key: String, value: Any?, save: Boolean = false) {
+        dataMap.set(key,value)
         if(save) asyncSave()
     }
 
-    fun addToStringList(plugin: JavaPlugin, key: String, str: String, save: Boolean = false): Boolean {
-        val list = getStringList(plugin,key)
+    fun addToStringList(key: String, str: String, save: Boolean = false): Boolean {
+        val list = getStringList(key)
         if(list.contains(str)) return false
-        set(plugin,key,list + str)
+        set(key,list + str)
         if(save) asyncSave()
         return true
     }
@@ -66,21 +74,21 @@ class PlayerData(val uuid: UUID) {
 
 
 
-    var permission = PermissionGrade.fromString((getStringOrNull(main,"permission") ?: "NEWBIE").toUpperCase())!!
+    var permission = PermissionGrade.fromString((getStringOrNull("permission") ?: "NEWBIE").toUpperCase())!!
         private set
 
     fun setPermission(grade: PermissionGrade) { permission = grade }
 
     private val wallet = Wallet(
-        getLong(main,"wallet.money"),
-        getLong(main,"wallet.cash")
+        getLong("wallet.money"),
+        getLong("wallet.cash")
     )
 
     fun getPayment(type: PaymentType): Payment? = wallet.getPayment(type)
 
     private fun updateWallet() {
         PaymentType.values().forEach {
-            set(main,"wallet.${it.name.lowercase()}", wallet.getPayment(it)?.balance)
+            set("wallet.${it.name.lowercase()}", wallet.getPayment(it)?.balance)
         }
     }
 

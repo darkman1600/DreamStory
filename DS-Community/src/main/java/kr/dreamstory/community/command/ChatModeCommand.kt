@@ -14,7 +14,7 @@ class ChatModeCommand: TabExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if(sender is Player) {
-            val state = CommunityManager.getState(sender.uniqueId)
+            val state = CommunityManager.getCommunityData(sender.uniqueId)!!
             state.setChatMode(ChatMode.fromString(args[0]) ?: ChatMode.DEFAULT)
             sender.sendMessage("현재 채팅모드는 ${state.chatMode.display} 입니다.")
         }

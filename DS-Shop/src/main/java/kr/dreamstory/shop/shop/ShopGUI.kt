@@ -1,8 +1,8 @@
 package kr.dreamstory.shop.shop
 
+import kr.dreamstory.library.extension.setGlow
 import kr.dreamstory.library.gui.DSGUI
 import kr.dreamstory.library.item.minecraft.api.ItemStackBuilder
-import kr.dreamstory.library.item.minecraft.setGlow
 import kr.dreamstory.shop.category.Category
 import org.bukkit.Material
 import org.bukkit.entity.Player

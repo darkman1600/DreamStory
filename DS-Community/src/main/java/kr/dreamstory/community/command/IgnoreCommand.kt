@@ -20,20 +20,6 @@ class IgnoreCommand: TabExecutor {
         }
         when(args.size) {
             1 -> return StringUtil.copyPartialMatches(args[0],listOf("추가","해제"),list)
-            2 -> {
-                when(args[0]) {
-                    "추가" -> {
-                        StringUtil.copyPartialMatches(args[1], Bukkit.getOnlinePlayers().map { it.name },list)
-                        list.remove(sender.name)
-                    }
-                    "해제" -> {
-                        val ignoreNames = CommunityManager.getState(sender.uniqueId).ignorePlayerList.mapNotNull {
-                            PlayerDataManger.getPlayerData(it,false).name
-                        }
-                        StringUtil.copyPartialMatches(args[1],ignoreNames,list)
-                    }
-                }
-            }
         }
         return list
     }
