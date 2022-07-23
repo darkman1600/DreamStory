@@ -26,9 +26,12 @@ object PlayerDataManger {
 
     fun loadPlayerData(player: Player): Boolean {
         val uuid = player.uniqueId
-        val newData = PlayerData(uuid)
-        newData.joinUpdate(player)
-        dataMap[uuid] = newData
+        val d = getPlayerData(uuid)
+        if(d == null) {
+            val newData = PlayerData(uuid)
+            newData.joinUpdate(player)
+            dataMap[uuid] = newData
+        }
         return true
     }
 
