@@ -63,7 +63,6 @@ object PlayerDataManger {
                 DataUpdateEvent().callEvent()
                 waitFor(40)
                 DataSaveEvent().callEvent()
-                main.server.broadcastMessage("저장")
                 saveAll()
             }
         }

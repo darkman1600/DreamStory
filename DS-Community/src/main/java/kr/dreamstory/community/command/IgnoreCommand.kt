@@ -3,7 +3,7 @@ package kr.dreamstory.community.command
 import kr.dreamstory.community.chat.CommunityManager
 import kr.dreamstory.community.ignore.IgnoreManager
 import kr.dreamstory.library.data.PlayerDataManger
-import kr.dreamstory.library.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageManager
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender

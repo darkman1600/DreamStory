@@ -2,6 +2,7 @@ package kr.dreamstory.ability.ability.play.ability
 
 import kr.dreamstory.ability.ability.main
 import kr.dreamstory.ability.ability.play.ability.hud.HUDSkin
+import kr.dreamstory.ability.manager.ActionBarManager
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.data.PlayerDataManger
@@ -23,8 +24,6 @@ data class Ability(val uuid: UUID) {
     lateinit var levelBar: String
         private set
     private var actionBarUpdate: Boolean = false
-    var actionBarToggle: Boolean = true
-        private set
 
     constructor(
             uuid: UUID,
@@ -33,8 +32,7 @@ data class Ability(val uuid: UUID) {
             fishLv: Int, fishExp: Long,
             huntLv: Int, huntExp: Long,
             mineSkill: String?, farmSkill: String?,
-            fishSkill: String?, huntSkill: String?,
-            actionBarEnable: Boolean
+            fishSkill: String?, huntSkill: String?
     ): this(uuid) {
         levels[AbilityType.MINE.index] = mineLv
         exps[AbilityType.MINE.index] = mineExp
@@ -55,7 +53,6 @@ data class Ability(val uuid: UUID) {
             huntSkill?.fromJson() ?: SkillTree()
         )
         actionBar = parseActionBar()
-        actionBarToggle = actionBarEnable
     }
 
     fun getLevel(type: AbilityType): Int = levels[type.index]
@@ -144,25 +141,18 @@ data class Ability(val uuid: UUID) {
 
     fun updateData() {
         val d = PlayerDataManger.getPlayerData(uuid) ?: return
-        main.server.scheduler.schedule(main,SynchronizationContext.ASYNC) {
-            d.set("ability.mine.level", getLevel(AbilityType.MINE))
-            d.set("ability.mine.exp", getExp(AbilityType.MINE))
-            d.set("ability.farm.level", getLevel(AbilityType.FARM))
-            d.set("ability.farm.exp", getExp(AbilityType.FARM))
-            d.set("ability.fish.level", getLevel(AbilityType.FISH))
-            d.set("ability.fish.exp", getExp(AbilityType.FISH))
-            d.set("ability.hunt.level", getLevel(AbilityType.HUNT))
-            d.set("ability.hunt.exp", getExp(AbilityType.HUNT))
-            d.set("ability.mine.skill", getSkillTree(AbilityType.MINE).toJson())
-            d.set("ability.hunt.skill", getSkillTree(AbilityType.FARM).toJson())
-            d.set("ability.fish.skill", getSkillTree(AbilityType.FISH).toJson())
-            d.set("ability.hunt.skill", getSkillTree(AbilityType.HUNT).toJson())
-        }
-    }
-
-    fun toggleActionBar() {
-        actionBarToggle = !actionBarToggle
-        PlayerDataManger.getPlayerData(uuid)!!.set("ability.actionbar.enable",actionBarToggle)
+        d.set("ability.mine.level", getLevel(AbilityType.MINE))
+        d.set("ability.mine.exp", getExp(AbilityType.MINE))
+        d.set("ability.farm.level", getLevel(AbilityType.FARM))
+        d.set("ability.farm.exp", getExp(AbilityType.FARM))
+        d.set("ability.fish.level", getLevel(AbilityType.FISH))
+        d.set("ability.fish.exp", getExp(AbilityType.FISH))
+        d.set("ability.hunt.level", getLevel(AbilityType.HUNT))
+        d.set("ability.hunt.exp", getExp(AbilityType.HUNT))
+        d.set("ability.mine.skill", getSkillTree(AbilityType.MINE).toJson())
+        d.set("ability.hunt.skill", getSkillTree(AbilityType.FARM).toJson())
+        d.set("ability.fish.skill", getSkillTree(AbilityType.FISH).toJson())
+        d.set("ability.hunt.skill", getSkillTree(AbilityType.HUNT).toJson())
     }
 
     private fun parseActionBar(): String {

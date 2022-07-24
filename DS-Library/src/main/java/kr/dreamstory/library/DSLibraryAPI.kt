@@ -2,7 +2,7 @@ package kr.dreamstory.library
 
 import kr.dreamstory.library.data.PlayerDataManger
 import kr.dreamstory.library.item.dreamstory.data.DSItemManager
-import kr.dreamstory.library.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageManager
 import kr.dreamstory.library.utils.SignMenuFactory
 
 object DSLibraryAPI {

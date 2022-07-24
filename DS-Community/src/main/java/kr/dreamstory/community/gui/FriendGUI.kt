@@ -28,6 +28,21 @@ class FriendGUI(player: Player): DSGUI(36,"친구 관리",player) {
 
     var page = 0
 
+    fun a() {
+
+    }
+
+    fun b() {
+
+    }
+
+    fun c() {
+        main.schedule(SynchronizationContext.ASYNC) {
+            a()
+            b()
+        }
+    }
+
     override fun init() {
         main.schedule(SynchronizationContext.ASYNC) {
             waitFor(1)

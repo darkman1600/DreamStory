@@ -1,4 +1,4 @@
-package kr.dreamstory.library.message
+package kr.dreamstory.library.utils.message
 
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender

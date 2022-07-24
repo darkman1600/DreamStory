@@ -6,8 +6,11 @@ import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
+import java.util.UUID
 
 object ActionBarManager {
+
+    val actionBarSet = HashSet<Player>()
 
     fun run(waitTime: Long) {
         val server = main.server
@@ -16,11 +19,8 @@ object ActionBarManager {
         sc.schedule(main, SynchronizationContext.ASYNC) {
             waitFor(waitTime)
             while(true) {
-                server.onlinePlayers.forEach {
-                    val ability = it.ability
-                    if(ability?.actionBarToggle == true) {
-                        it.sendActionBar(Component.text(ability.actionBar))
-                    }
+                actionBarSet.forEach {
+                    it.sendActionBar(Component.text(it.ability!!.actionBar))
                 }
                 waitFor(1)
             }

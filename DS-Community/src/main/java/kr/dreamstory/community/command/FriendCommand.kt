@@ -6,7 +6,7 @@ import kr.dreamstory.community.gui.FriendGUI
 import kr.dreamstory.community.request.RequestManager
 import kr.dreamstory.community.request.RequestType
 import kr.dreamstory.library.data.PlayerDataManger
-import kr.dreamstory.library.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageManager
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender

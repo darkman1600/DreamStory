@@ -6,8 +6,8 @@ import kr.dreamstory.community.main
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.data.PlayerDataManger
-import kr.dreamstory.library.message.MessageManager
-import kr.dreamstory.library.message.MessageType
+import kr.dreamstory.library.utils.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageType
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 

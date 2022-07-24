@@ -30,7 +30,6 @@ object AbilityManager {
             d.getStringOrNull("ability.farm.skill"),
             d.getStringOrNull("ability.fish.skill"),
             d.getStringOrNull("ability.hunt.skill"),
-            d.getBoolean("ability.actionbar.enable",true)
         )
         abilityMap[uuid] = ability
         return true

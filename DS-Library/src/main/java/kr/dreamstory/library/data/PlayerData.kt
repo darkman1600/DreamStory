@@ -5,6 +5,7 @@ import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.economy.Payment
 import kr.dreamstory.library.economy.PaymentType
 import kr.dreamstory.library.economy.Wallet
+import kr.dreamstory.library.economy.WalletManager
 import kr.dreamstory.library.extension.toBase64
 import kr.dreamstory.library.extension.toItemStackFromBase64
 import kr.dreamstory.library.main
@@ -23,10 +24,11 @@ class PlayerData(val uuid: UUID) {
     private val dataMap = YamlConfiguration.loadConfiguration(file)
 
     val hasPlayedBefore = file.exists()
-    var name: String? = getStringOrNull("name")
-        private set
-    var head: ItemStack? = getStringOrNull("head")?.toItemStackFromBase64()
-        private set
+    var name: String? = getStringOrNull("name");                                                               private set
+    var head: ItemStack? = getStringOrNull("head")?.toItemStackFromBase64();                                   private set
+    var permission = PermissionGrade.fromString((getStringOrNull("permission") ?: "NEWBIE").toUpperCase())!!;  private set
+    private val wallet = Wallet(getLong("wallet.money"),getLong("wallet.cash"))
+    private val options = HashMap<String,Any>()
 
     fun joinUpdate(player: Player) {
         name = player.name
@@ -69,20 +71,7 @@ class PlayerData(val uuid: UUID) {
     }
 
 
-
-
-
-
-
-    var permission = PermissionGrade.fromString((getStringOrNull("permission") ?: "NEWBIE").toUpperCase())!!
-        private set
-
     fun setPermission(grade: PermissionGrade) { permission = grade }
-
-    private val wallet = Wallet(
-        getLong("wallet.money"),
-        getLong("wallet.cash")
-    )
 
     fun getPayment(type: PaymentType): Payment? = wallet.getPayment(type)
 

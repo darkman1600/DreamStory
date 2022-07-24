@@ -10,7 +10,7 @@ import kr.dreamstory.library.extension.color
 import kr.dreamstory.library.extension.setStringNbt
 import kr.dreamstory.library.extension.translateHexColorCodes
 import kr.dreamstory.library.main
-import kr.dreamstory.library.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageManager
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration

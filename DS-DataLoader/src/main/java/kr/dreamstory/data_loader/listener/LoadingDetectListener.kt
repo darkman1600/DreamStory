@@ -6,7 +6,7 @@ import kr.dreamstory.data_loader.objs.DataContainer
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.data.PlayerDataManger
-import kr.dreamstory.library.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageManager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener

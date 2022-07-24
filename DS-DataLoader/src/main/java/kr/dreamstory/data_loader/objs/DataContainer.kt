@@ -8,8 +8,9 @@ import kr.dreamstory.community.chat.CommunityManager
 import kr.dreamstory.data_loader.main
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
+import kr.dreamstory.library.data.PlayerDataLoadEvent
 import kr.dreamstory.library.data.PlayerDataManger
-import kr.dreamstory.library.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageManager
 import org.bukkit.entity.Player
 
 class DataContainer(player: Player) {
@@ -27,6 +28,11 @@ class DataContainer(player: Player) {
             val playerData = PlayerDataManger.getPlayerData(player.uniqueId)!!
             if(!AbilityManager.loadAbility(playerData)) { message(); return@schedule }
             if(!CommunityManager.loadCommunityData(playerData)) { message(); return@schedule }
+
+            val event = PlayerDataLoadEvent(player,playerData)
+            event.callEvent()
+            if(event.isCancelled) return@schedule
+
             isLoaded = true
         }
     }

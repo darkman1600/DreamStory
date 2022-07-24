@@ -1,4 +1,4 @@
-package kr.dreamstory.library.message
+package kr.dreamstory.library.utils.message
 
 enum class MessageType(val prefix: String) {
     SUCCESS("§a\u2714§r"),

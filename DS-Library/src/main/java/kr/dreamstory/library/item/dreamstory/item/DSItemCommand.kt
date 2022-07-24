@@ -3,8 +3,8 @@ package kr.dreamstory.library.item.dreamstory.item
 import kr.dreamstory.library.item.dreamstory.data.DSItemManager
 import kr.dreamstory.library.item.dreamstory.item.guis.DSItemMainGUI
 import kr.dreamstory.library.main
-import kr.dreamstory.library.message.MessageManager
-import kr.dreamstory.library.message.MessageType
+import kr.dreamstory.library.utils.message.MessageManager
+import kr.dreamstory.library.utils.message.MessageType
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
