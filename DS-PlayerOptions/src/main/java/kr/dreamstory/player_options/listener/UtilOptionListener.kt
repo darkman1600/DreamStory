@@ -1,6 +1,7 @@
 package kr.dreamstory.player_options.listener
 
 import kr.dreamstory.community.chat.CommunityManager
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.data.PlayerDataLoadEvent
@@ -50,7 +51,7 @@ class UtilOptionListener: Listener {
         event.joinMessage(null)
         val player = event.player
         main.schedule(SynchronizationContext.ASYNC) {
-            for(p in Bukkit.getOnlinePlayers()) {
+            for(p in DSLibraryAPI.dsOnlinePlayers) {
                 val cd = CommunityManager.getCommunityData(p.uniqueId) ?: continue
                 if(cd.friends.contains(player.uniqueId)) {
                     p.sendMessage("§e친구 §f${player.name} 님이 접속하였습니다.")

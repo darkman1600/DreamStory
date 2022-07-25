@@ -7,6 +7,7 @@ import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.data.PlayerData
 import kr.dreamstory.library.data.PlayerDataManger
+import org.bukkit.entity.Player
 import java.util.*
 
 object AbilityManager {
@@ -35,8 +36,9 @@ object AbilityManager {
         return true
     }
 
-    fun saveAndQuit(uuid: UUID) {
-        abilityMap.remove(uuid)?.updateData()
+    fun saveAndQuit(player: Player) {
+        abilityMap.remove(player.uniqueId)?.updateData()
+        ActionBarManager.actionBarSet.remove(player)
     }
 
     fun updateAll() {

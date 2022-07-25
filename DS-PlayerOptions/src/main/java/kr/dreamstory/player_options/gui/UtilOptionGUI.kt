@@ -51,7 +51,7 @@ class UtilOptionGUI(player: Player): DSGUI(27,"편의기능 설정",player) {
                     UtilOptionListener.pickupDetectSet.add(uuid)
                     SoundManager.turnOff(player)
                 }
-                PlayerDataManger.getPlayerData(uuid)!!.set("option.pickup",!bool)
+                PlayerDataManger.getPlayerData(uuid)!!.set("option.pickup",bool)
                 refresh(true)
             }
             11 -> {
@@ -64,7 +64,7 @@ class UtilOptionGUI(player: Player): DSGUI(27,"편의기능 설정",player) {
                     UtilOptionListener.dropDetectSet.add(uuid)
                     SoundManager.turnOff(player)
                 }
-                PlayerDataManger.getPlayerData(uuid)!!.set("option.drop",!bool)
+                PlayerDataManger.getPlayerData(uuid)!!.set("option.drop",bool)
                 refresh(true)
             }
         }

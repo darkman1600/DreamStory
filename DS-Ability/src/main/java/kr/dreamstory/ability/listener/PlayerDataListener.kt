@@ -25,7 +25,7 @@ class PlayerDataListener: Listener {
     @EventHandler
     fun onQuit(e: PlayerQuitEvent) {
         val p = e.player
-        AbilityManager.saveAndQuit(p.uniqueId)
+        AbilityManager.saveAndQuit(p)
         LogManager.saveLog(p, LogManager.LogType.QUIT)
     }
 

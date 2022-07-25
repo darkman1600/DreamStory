@@ -4,6 +4,7 @@ import io.papermc.paper.chat.ChatRenderer
 import io.papermc.paper.event.player.AsyncChatEvent
 import kr.dreamstory.ability.extension.region
 import kr.dreamstory.community.prefix.Prefix
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.data.PlayerData
 import kr.dreamstory.library.data.PlayerDataManger
 import net.kyori.adventure.audience.Audience
@@ -39,7 +40,7 @@ class CommunityData(playerData: PlayerData): ChatRenderer {
     fun filterViewers(sender: Player): MutableSet<out Audience> {
         val newSet = mutableSetOf<Player>()
         when(chatMode) {
-            ChatMode.DEFAULT -> newSet.addAll(Bukkit.getOnlinePlayers())
+            ChatMode.DEFAULT -> newSet.addAll(DSLibraryAPI.dsOnlinePlayers)
             ChatMode.ISLAND -> {
                 val bb = BentoBox.getInstance()
                 val members = bb.islands.getMembers(Bukkit.getWorld("bskyblock_world")!!,sender.uniqueId)

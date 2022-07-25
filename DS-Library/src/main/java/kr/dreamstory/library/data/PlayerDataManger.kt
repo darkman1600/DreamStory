@@ -1,5 +1,6 @@
 package kr.dreamstory.library.data
 
+import kr.dreamstory.library.DSLibraryAPI
 import kr.dreamstory.library.coroutine.SynchronizationContext
 import kr.dreamstory.library.coroutine.schedule
 import kr.dreamstory.library.main
@@ -39,9 +40,9 @@ object PlayerDataManger {
         val uuid = player.uniqueId
         val data = dataMap[uuid] ?: return
         main.schedule(SynchronizationContext.ASYNC) {
+            DSLibraryAPI.dsOnlinePlayers.remove(player)
             data.update()
             data.save()
-            dataMap.remove(uuid)
         }
     }
 
@@ -52,7 +53,7 @@ object PlayerDataManger {
     }
     private fun saveAll() {
         main.schedule(SynchronizationContext.ASYNC) {
-            dataMap.values.forEach { it.save() }
+            DSLibraryAPI.dsOnlinePlayers.forEach { dataMap[it.uniqueId]!!.save() }
         }
     }
 
